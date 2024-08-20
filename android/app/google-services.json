@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "840774462334",
+    "project_id": "opinio-49707",
+    "storage_bucket": "opinio-49707.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840774462334:android:e2745fc3df62510eff212f",
+        "android_client_info": {
+          "package_name": "com.example.opinio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJHqXGYQheQv9C_OFA2rGjKWtRinK2Mik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
