@@ -45,9 +45,9 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: index,
           onTap: navigateBottomBar,
-          backgroundColor: Colors.black,
-          selectedItemColor: Colors.red,
-          unselectedItemColor: Colors.white,
+          backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+          selectedItemColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+          unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'HOME'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'SEARCH'),

@@ -8,7 +8,7 @@ class SearchPage extends StatelessWidget {
     return Center(
       child: Container(
         child: Center(child: Text("Search Page",style: TextStyle(color: Colors.white),)),
-        color: Colors.grey[900],
+        color: Theme.of(context).colorScheme.surface,
       ),
     );
   }

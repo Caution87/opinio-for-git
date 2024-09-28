@@ -17,16 +17,16 @@ class LikedCommentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        foregroundColor: Colors.white,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         title: Text(
           "O P I N I O",
           style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
           overflow: TextOverflow.visible, 
         ),
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
       body: ListView.builder(
                 itemCount: likedComments.length,

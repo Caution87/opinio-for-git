@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class MyLikeButton extends StatefulWidget {
+class LikeButtonForComments extends StatefulWidget {
   final bool isLiked;
   final void Function()? onTap;
-  MyLikeButton({super.key, required this.isLiked, required this.onTap});
+  LikeButtonForComments({super.key, required this.isLiked, required this.onTap});
 
   @override
-  State<MyLikeButton> createState() => _LikeButtonState();
+  State<LikeButtonForComments> createState() => _LikeButtonState();
 }
 
-class _LikeButtonState extends State<MyLikeButton> {
+class _LikeButtonState extends State<LikeButtonForComments> {
   @override
   Widget build(BuildContext context) {
     // return GestureDetector(
@@ -21,7 +21,7 @@ class _LikeButtonState extends State<MyLikeButton> {
     return IconButton(
       onPressed: widget.onTap,
       icon: Icon(widget.isLiked?Icons.favorite:Icons.favorite_border,),
-      color: Theme.of(context).colorScheme.inversePrimary,);
+      color: Colors.black,);
       
   }
 }

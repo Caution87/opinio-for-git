@@ -28,7 +28,7 @@ class _LikedCommentTileState extends State<LikedCommentTile> {
       padding: const EdgeInsets.all(12),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[800],
+          color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
@@ -44,7 +44,7 @@ class _LikedCommentTileState extends State<LikedCommentTile> {
                       child: Container(
                         child: Text(
                           widget.comment,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary,),
                           //So that text goes to new line
                           overflow: TextOverflow.visible, 
                         ),
@@ -57,7 +57,7 @@ class _LikedCommentTileState extends State<LikedCommentTile> {
               Column(
                 children: [
                   //like button
-                  LikeButton(isLiked: isLiked, onTap: toggleLike),
+                  MyLikeButton(isLiked: isLiked, onTap: toggleLike),
                   //like count
                 ],
               )

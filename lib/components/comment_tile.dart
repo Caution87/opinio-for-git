@@ -1,7 +1,8 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, prefer_const_literals_to_create_immutables
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:opinio/components/like_button.dart';
 
 class CommentTile extends StatefulWidget {
@@ -41,14 +42,14 @@ class _CommentTileState extends State<CommentTile> {
       child: Container(
         decoration: BoxDecoration(
           color: widget.opinion == 0
-              ? Color.fromRGBO(33, 158, 188, 1)
-              : Color.fromRGBO(255, 80, 3, 1),
+              ? Color.fromRGBO(68,161,160,1)
+              : Color.fromRGBO(212,77,92,1),
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
               color: widget.opinion == 0
-                  ? Color.fromRGBO(33, 158, 188, 1)
-                  : Color.fromRGBO(255, 80, 3, 1),
+                  ? Color.fromRGBO(68,161,160,1)
+                  : Color.fromRGBO(212,77,92,1),
               spreadRadius: 2,
               blurRadius: 0.5,
               offset: Offset(0, 3), // changes position of shadow
@@ -58,7 +59,7 @@ class _CommentTileState extends State<CommentTile> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               //text
                Padding(
@@ -68,22 +69,17 @@ class _CommentTileState extends State<CommentTile> {
                    child: Expanded(
                      child: Text(
                        widget.comment,
-                       style: TextStyle(color: Colors.white),
+                       style: TextStyle(color: Colors.white,),
                        //So that text goes to new line
                        overflow: TextOverflow.visible, 
                      ),
                    ),
                  ),
                ),
-              // Spacer(),
+              Spacer(),
               //icon
-              Column(
-                children: [
-                  //like button
-                  LikeButton(isLiked: isLiked, onTap: toggleLike),
-                  //like count
-                ],
-              )
+              // Align(alignment:Alignment.topLeft,child:  LikeButton(size: 24,))
+              LikeButton(size: 24,),
             ],
           ),
         ),
@@ -91,3 +87,4 @@ class _CommentTileState extends State<CommentTile> {
     );
   }
 }
+

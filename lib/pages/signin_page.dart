@@ -60,13 +60,13 @@ class _SigninPageState extends State<SigninPage> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: Column(
           children: [
             //Don't Worry Container or Logo Container
             Container(
-                color: Color.fromRGBO(32, 32, 32, 1),
+                color: Theme.of(context).colorScheme.secondary,
                 height: 320,
                 width: screenWidth,
                 child: Column(
@@ -76,7 +76,7 @@ class _SigninPageState extends State<SigninPage> {
                       child: Text(
                         "Don't Worry You're",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.inversePrimary,
                             fontSize: 42,
                             fontWeight: FontWeight.w100),
                       ),
@@ -85,7 +85,7 @@ class _SigninPageState extends State<SigninPage> {
                       child: Text(
                         "Anonymous",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.inversePrimary,
                             fontSize: 42,
                             fontWeight: FontWeight.w100),
                       ),
@@ -102,14 +102,14 @@ class _SigninPageState extends State<SigninPage> {
                     child: Center(
                         child: Text(
                       "Login",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
                     )),
                     height: 40,
                     width: screenWidth / 2,
                     decoration: BoxDecoration(
                       borderRadius:
                           BorderRadius.only(bottomRight: Radius.circular(20)),
-                      color: Colors.black,
+                      color:Theme.of(context).colorScheme.surface,
                     ),
                   ),
                 ),
@@ -122,14 +122,14 @@ class _SigninPageState extends State<SigninPage> {
                           child: Center(
                               child: Text(
                             "Sign-in",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
                           )),
                           height: 40,
                           width: screenWidth / 2,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(20)),
-                              color: Color.fromRGBO(32, 32, 32, 1)),
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                         //Red Line
                         Container(
@@ -184,17 +184,17 @@ class _SigninPageState extends State<SigninPage> {
                 Expanded(
                   child: Divider(
                     thickness: 2,
-                    color: Colors.grey.shade700,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 Text(
                   "Or Continue with",
-                  style: TextStyle(color: Colors.grey.shade500),
+                  style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
                 ),
                 Expanded(
                   child: Divider(
                     thickness: 2,
-                    color: Colors.grey.shade700,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ],

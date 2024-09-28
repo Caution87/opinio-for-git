@@ -11,18 +11,18 @@ class _CHangeProfilePageState extends State<ChangeProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        foregroundColor: Colors.white,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         title: Text(
           "O P I N I O",
           style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
           overflow: TextOverflow.visible,
         ),
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
-      body: Text('Change Profile Page',style: TextStyle(color: Colors.white,fontSize: 32),),
+      body: Text('Change Profile Page',style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary,fontSize: 32),),
     );
   }
 }

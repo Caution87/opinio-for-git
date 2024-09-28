@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:opinio/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
-class SettingsTile extends StatelessWidget {
+class SettingsTileWithCupertino extends StatelessWidget {
   final String property;
-  final Widget icon;
+  final CupertinoSwitch cupertinoSwitch;
   final void Function()? onTap;
-  SettingsTile({super.key, required this.property, required this.icon, required this.onTap});
+  SettingsTileWithCupertino({super.key, required this.property, required this.onTap, required this.cupertinoSwitch});
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +32,10 @@ class SettingsTile extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                IconButton(
-                onPressed: () {},
-                icon: icon,
-                style: IconButton.styleFrom(
-                  foregroundColor: Colors.red
-                ),)
+                CupertinoSwitch(
+                  value: Provider.of<ThemeProvider>(context, listen:false).isLightMode,
+                  onChanged: (value) =>
+                  Provider.of<ThemeProvider>(context,listen:false).toggleTheme(),)
               ],
             ),
           ),
