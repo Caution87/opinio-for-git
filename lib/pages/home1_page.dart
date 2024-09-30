@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:opinio/components/debate_tile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:opinio/components/mycarousel.dart';
+import 'package:opinio/pages/practice_page.dart';
 
 class Home1Page extends StatefulWidget {
   const Home1Page({super.key});
@@ -92,6 +93,16 @@ class _Home1PageState extends State<Home1Page> {
             );
           },
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PracticePage()),
+                );
+              },
+              icon: Icon(Icons.bug_report))
+        ],
       ),
       drawer: Drawer(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -209,7 +220,7 @@ class _Home1PageState extends State<Home1Page> {
           ],
         ),
       ),
-      body:CustomScrollView(
+      body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Container(

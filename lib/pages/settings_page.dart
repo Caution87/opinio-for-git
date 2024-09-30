@@ -34,37 +34,39 @@ class _SettingsPageState extends State<SettingsPage> {
         // backgroundColor: Color.fromRGBO(32, 32, 32, 1),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SettingsTile(
-              property: 'Logout', icon: Icon(Icons.logout), onTap: signUserOut),
-          SettingsTile(
-              property: 'Change Password',
-              icon: Icon(Icons.password),
-              onTap: () {}),
-          SettingsTileWithCupertino(
-            property: 'Light Mode',
-            onTap: () {},
-            cupertinoSwitch: CupertinoSwitch(
-              value: Provider.of<ThemeProvider>(context, listen: false)
-                  .isLightMode,
-              onChanged: (value) =>
-                  Provider.of<ThemeProvider>(context, listen: false)
-                      .toggleTheme(),
-            ),
-          ),
-          SettingsTile(
-            property: 'Notifications',
-            onTap: () {},
-            icon: Icon(Icons.notification_important),
-          ),
-          SettingsTile(property: 'About', icon: Icon(Icons.info), onTap: () {}),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
             SettingsTile(
-              property: 'Change Password',
-              icon: Icon(Icons.password),
-              onTap: () {}),
-        ],
+                property: 'Logout', icon: Icon(Icons.logout), onTap: signUserOut),
+            SettingsTile(
+                property: 'Change Password',
+                icon: Icon(Icons.password),
+                onTap: () {}),
+            SettingsTileWithCupertino(
+              property: 'Light Mode',
+              onTap: () {},
+              cupertinoSwitch: CupertinoSwitch(
+                value: Provider.of<ThemeProvider>(context, listen: false)
+                    .isLightMode,
+                onChanged: (value) =>
+                    Provider.of<ThemeProvider>(context, listen: false)
+                        .toggleTheme(),
+              ),
+            ),
+            SettingsTile(
+              property: 'Notifications',
+              onTap: () {},
+              icon: Icon(Icons.notification_important),
+            ),
+            SettingsTile(property: 'About', icon: Icon(Icons.info), onTap: () {}),
+              SettingsTile(
+                property: 'Change Password',
+                icon: Icon(Icons.password),
+                onTap: () {}),
+          ],
+        ),
       ),
     );
   }
