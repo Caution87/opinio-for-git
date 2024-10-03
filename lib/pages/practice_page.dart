@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:opinio/components/comment_tile.dart';
+import 'package:opinio/pages/post_comment_page.dart';
 import 'package:opinio/services/firestore.dart';
 
 class PracticePage extends StatefulWidget {
@@ -10,48 +13,28 @@ class PracticePage extends StatefulWidget {
 }
 
 class _PracticePageState extends State<PracticePage> {
-  int opinion = 2; // Default opinion (neutral)
   final FirestoreService firestoreService = FirestoreService();
-  final TextEditingController commentController = TextEditingController();
-
-  void openCommentBox() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: TextField(
-          controller: commentController,
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              firestoreService.addComment(commentController.text, opinion);
-              //clear textfield
-              commentController.clear();
-              //pop
-              Navigator.pop(context);
-            },
-            child: Text('Add'),
-          )
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('practice page'),
-        centerTitle: true,
+        title: Text('Pratice Page'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PostCommentPage()),
+          );
+        },
+        child: Icon(Icons.add),
       ),
       body: StreamBuilder<QuerySnapshot>(
           stream: firestoreService.getCommentsStream(),
           builder: (context, snapshot) {
-            //if we have data get docs
+            //check if we have data
             if (snapshot.hasData) {
               List commentsList = snapshot.data!.docs;
-              print(commentsList);
-              //display list
               return ListView.builder(
                   itemCount: commentsList.length,
                   itemBuilder: (context, index) {
@@ -62,20 +45,17 @@ class _PracticePageState extends State<PracticePage> {
                     Map<String, dynamic> data =
                         document.data() as Map<String, dynamic>;
                     String commentText = data['comment_content'];
-                    //display as listTile
-                    ListTile(
-                      title: Text(commentText),
-                      leading: Icon(Icons.star),
-                    );
+                    //display
+                    // return ListTile(
+                    //   title: Text(commentText),
+                    // );
+                    return CommentTile(
+                        comment: commentText, opinion: 0, likes: []);
                   });
             } else {
-              return const Text('Nothing to show');
+              return Text("No Comments");
             }
           }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: openCommentBox,
-        child: Icon(Icons.add),
-      ),
     );
   }
 }

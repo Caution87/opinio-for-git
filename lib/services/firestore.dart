@@ -11,10 +11,10 @@ class FirestoreService {
     String comment,
     int opinion,
   ) {
-    return FirebaseFirestore.instance.collection('comments').add({
+    return comments.add({
       'comment_content': comment,
-      'user_opinion': opinion,
       'timestamp': Timestamp.now(),
+      'userOpinion': opinion,
     });
   }
 
