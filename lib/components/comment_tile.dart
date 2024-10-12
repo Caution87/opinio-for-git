@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_literals_to_create_immutables
+// ignore_for_file: unused_import, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
