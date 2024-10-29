@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:opinio/pages/post_debate_page.dart';
 import 'package:opinio/pages/practice_page_comments.dart';
 import 'package:opinio/services/firestore.dart';
 import 'package:opinio/pages/post_comment_page.dart'; // Import the page you want to navigate to
@@ -14,12 +16,22 @@ class PracticePage extends StatefulWidget {
 
 class _PracticePageState extends State<PracticePage> {
   final FirestoreService firestoreService = FirestoreService();
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Practice Page'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PostDebatePage()),
+          );
+        },
+        child: Icon(Icons.add),
       ),
       body: StreamBuilder(
         stream: firestoreService.getDebatesStream(),
