@@ -1,11 +1,15 @@
 // ignore_for_file: sort_child_properties_last, unused_import
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:opinio/components/debate_tile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:opinio/components/mycarousel.dart';
-import 'package:opinio/pages/practice_page.dart';
+import 'package:opinio/pages/debate_page.dart';
+import 'package:opinio/pages/post_debate_page.dart';
+import 'package:opinio/pages/practice_page_comments.dart';
+import 'package:opinio/services/firestore.dart';
 
 class Home1Page extends StatefulWidget {
   const Home1Page({super.key});
@@ -15,6 +19,7 @@ class Home1Page extends StatefulWidget {
 }
 
 class _Home1PageState extends State<Home1Page> {
+  final FirestoreService firestoreService = FirestoreService();
   //user
   final currentUser = FirebaseAuth.instance.currentUser!;
   void signUserOut() async {
@@ -22,52 +27,6 @@ class _Home1PageState extends State<Home1Page> {
     // Navigate to login screen or show a message
   }
 
-  List<List> carouselImages = [
-    ["Laddoos", "lib/carousel_images/Laddo image.jpg"],
-    [
-      "Rowan Atkinson",
-      "lib/carousel_images/file-photo-actor-rowan-atkinson-20110804-233218-383.jpg"
-    ],
-    ["Deadpool", "lib/carousel_images/deadpool.jpeg"],
-  ];
-  List<List> debateTiles = [
-    [
-      "Global Warming is the major problem to face this century.",
-      'lib/Opinio_Images/Global_Warming.jpg',
-      123
-    ],
-    [
-      "Anti-litter laws need to be stricter",
-      'lib/Opinio_Images/litter.jpg',
-      23
-    ],
-    [
-      "Lewis Hamilton should retire.",
-      'lib/Opinio_Images/lewis_hamilton.jpg',
-      80
-    ],
-    [
-      "CGPA is a determining factor for placements.",
-      'lib/Opinio_Images/CGPA.jpg',
-      54
-    ],
-    [
-      'The new Samsung Galaxy Book Edge is worth it.',
-      'lib/Opinio_Images/Samsung-Galaxy-Book-4-series-official-2-jpg.webp',
-      16
-    ],
-    [
-      'South Indian Food is the best cuisine.',
-      'lib/Opinio_Images/south indian food.jpg',
-      87
-    ],
-    ['Mahesh Babu is a gifted actor.', 'lib/Opinio_Images/Mahesh-Babu.jpg', 3],
-    [
-      "Vinesh Phogat shouldn't have been disqualified.",
-      'lib/Opinio_Images/Vinesh Phogat.jpg',
-      887
-    ],
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,16 +52,15 @@ class _Home1PageState extends State<Home1Page> {
             );
           },
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PracticePage()),
-                );
-              },
-              icon: Icon(Icons.bug_report))
-        ],
+      ),
+        floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PostDebatePage()),
+          );
+        },
+        child: Icon(Icons.add),
       ),
       drawer: Drawer(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -220,38 +178,56 @@ class _Home1PageState extends State<Home1Page> {
           ],
         ),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Container(
-              height: 300,
-              margin: EdgeInsets.symmetric(horizontal: 5),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: carouselImages.length,
-                itemBuilder: (context, index) {
-                  return MyCarousel(
-                    carouselTitle: carouselImages[index][0],
-                    carouselImangePath: carouselImages[index][1],
+      body: StreamBuilder(
+        stream: firestoreService.getDebatesStream(),
+        builder: (context, snapshot) {
+          // Show loading circle while waiting
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          // Get all debates from Firestore
+          final debates = snapshot.data!.docs;
+
+          // Return as a ListView
+          return ListView.builder(
+            itemCount: debates.length,
+            itemBuilder: (context, index) {
+              // Get each debate
+              final debate = debates[index];
+              // Get data from each debate
+              String title = debate['title'];
+              Timestamp timestamp = debate['timestamp'];
+              //get debate id
+
+              // Return as a ListTile with GestureDetector
+              return GestureDetector(
+                onTap: () {
+                  // Navigate to another page on tap
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DebatePage(
+                          debateId: debate.id, imagePath: "lib/Opinio_Images/Global_Warming.jpg", title: title,), // Pass data to the next page
+                    ),
                   );
                 },
-              ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return DebateTile(
-                  title: debateTiles[index][0],
-                  imagePath: debateTiles[index][1],
-                  likes: debateTiles[index][2],
-                  statement: debateTiles[index][0],
-                );
-              },
-              childCount: debateTiles.length,
-            ),
-          ),
-        ],
+                // child: ListTile(
+                //   title: Text(title),
+                //   subtitle: Text(
+                //       DateFormat('MMM dd, yyyy').format(timestamp.toDate())),
+                // ),
+                child: DebateTile(
+                  title: title,
+                  imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                  likes: 99, debateId: debate.id,
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

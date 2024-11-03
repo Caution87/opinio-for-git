@@ -4,15 +4,20 @@ import 'package:opinio/components/forOrAgainstButton.dart';
 
 class StatsPage extends StatefulWidget {
   final String imagePath;
-  final String statement;
-  const StatsPage({super.key, required this.imagePath, required this.statement});
+  final String title;
+  final String name;
+  final String debateId;
+  const StatsPage({
+    super.key,
+    required this.imagePath,
+    required this.title, required this.name, required this.debateId,
+  });
 
   @override
   State<StatsPage> createState() => _StatsPageState();
 }
 
 class _StatsPageState extends State<StatsPage> {
-  List images = ['lib/Opinio_Images/Global_Warming.jpg'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +55,18 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                 ),
               ),
-
+                SizedBox(height: 10),
+          // Statement
+          // Text(widget.statement),
+          // SizedBox(height: 10),
+          Container(
+              child: Text(
+            widget.title,
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontSize: 16),
+            textAlign: TextAlign.center,
+          )),
               SizedBox(height: 10),
               //Opinion summary stats
               Row(
@@ -58,10 +74,10 @@ class _StatsPageState extends State<StatsPage> {
                 children: [
                   DebatePageButton(
                     imagePath: widget.imagePath,
-                    title: 'OPINIONS',
                     shouldColor: false,
                     number: 0,
-                    statement: widget.statement,
+                    name: 'OPINIONS', debateId: widget.debateId,
+                    title: widget.title,
                   ),
                   //Space
                   const SizedBox(
@@ -69,37 +85,23 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                   DebatePageButton(
                     imagePath: widget.imagePath,
-                    statement: widget.statement,
-                    title: 'SUMMARY',
                     shouldColor: false,
-                    number: 1,
+                    number: 1, name: 'SUMMARY', debateId: widget.debateId,
+                    title: widget.title,
                   ),
                   const SizedBox(
                     width: 5,
                   ),
                   DebatePageButton(
-                    title: 'STATISTICS',
                     imagePath: widget.imagePath,
-                    statement: widget.statement,
                     shouldColor: true,
-                    number: 2,
+                    number: 2, name: 'STATISTICS', debateId: widget.debateId,
+                    title: widget.title,
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              //FOR OR AGAINST BUTTONS
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ForOrAgainstButton(
-                    type: true,
-                  ),
-                  ForOrAgainstButton(
-                    type: false,
-                  ),
-                ],
-              ),
-              //sort
+               const SizedBox(height: 10),
+          
             ]));
   }
 }

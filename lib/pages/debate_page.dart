@@ -1,47 +1,38 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, unused_import
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:opinio/components/against_button.dart';
 import 'package:opinio/components/comment_tile.dart';
 import 'package:opinio/components/debate_page_button.dart';
 import 'package:opinio/components/forOrAgainstButton.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:opinio/components/for_button.dart';
+import 'package:opinio/pages/post_comments_page.dart';
+import 'package:opinio/services/firestore.dart';
 
 class DebatePage extends StatefulWidget {
+  final String debateId;
   final String imagePath;
-  final String statement;
-  DebatePage({super.key, required this.imagePath, required this.statement});
+  final String title;
+  const DebatePage(
+      {super.key, required this.debateId, required this.imagePath, required this.title});
 
   @override
   State<DebatePage> createState() => _DebatePageState();
 }
 
 class _DebatePageState extends State<DebatePage> {
+  //getting currentUser
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  //get access to firestore
+  final FirestoreService firestoreService = FirestoreService();
+
   var _isSelectedFor = false;
   var _isSelectedAgainst = false;
-  List<List> comments = [
-    //0 is for 1 is against
-    [
-      'These are the liked comments by the user. No they are not, they are regular comments.',
-      0
-    ],
-    ["These comments don't have an opinion property", 1],
-    ['They are grey[800] in dark mode', 0],
-    [
-      'They will be another color in light mode. This comment is elaborated in order to check new line. To make the comments of different lenghts or sizes',
-      1
-    ],
-    ['The comments will have a different color in light mode', 0],
-    [
-      'Comments should be renamed to opinions and I believe many things in this app need to be renamed',
-      0
-    ],
-    ['I also believe we need a Light Mode', 1],
-  ];
 
-  final currentUser = FirebaseAuth.instance.currentUser!;
   bool isLiked = false;
 
   @override
@@ -71,6 +62,14 @@ class _DebatePageState extends State<DebatePage> {
               size: 36,
             )),
       ),
+      floatingActionButton: FloatingActionButton(onPressed:()
+      {Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostCommentsPage(debateId: widget.debateId) // Pass data to the next page
+                    ),
+                  );},
+      child: Icon(Icons.add),),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         //Till image to for against
@@ -81,7 +80,7 @@ class _DebatePageState extends State<DebatePage> {
             width: 430,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(widget.imagePath),
+                image: AssetImage("lib/Opinio_Images/Global_Warming.jpg"),
                 fit: BoxFit.fill,
               ),
             ),
@@ -93,7 +92,7 @@ class _DebatePageState extends State<DebatePage> {
           // SizedBox(height: 10),
           Container(
               child: Text(
-            widget.statement,
+            widget.title,
             style: TextStyle(
                 color: Theme.of(context).colorScheme.inversePrimary,
                 fontSize: 16),
@@ -107,32 +106,32 @@ class _DebatePageState extends State<DebatePage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               DebatePageButton(
-                title: 'OPINIONS',
                 number: 0,
                 shouldColor: true,
-                imagePath: widget.imagePath,
-                statement: widget.statement,
+                imagePath: "lib/Opinio_Images/Global_Warming.jpg", 
+                name: 'OPINIONS', debateId: widget.debateId, title: widget.title,
               ),
               //Space
               const SizedBox(
                 width: 5,
               ),
               DebatePageButton(
-                title: 'SUMMARY',
-                imagePath: widget.imagePath,
+                
+                imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                title: widget.title,
                 number: 1,
                 shouldColor: false,
-                statement: widget.statement,
+                 name: 'SUMMARY', debateId:  widget.debateId,
               ),
               const SizedBox(
                 width: 5,
               ),
               DebatePageButton(
-                title: 'STATISTICS',
-                imagePath: widget.imagePath,
+                imagePath: "lib/Opinio_Images/Global_Warming.jpg",
                 number: 2,
                 shouldColor: false,
-                statement: widget.statement,
+                 name: 'STATISTICS', debateId:  widget.debateId,
+                 title: widget.title,
               ),
             ],
           ),
@@ -148,9 +147,9 @@ class _DebatePageState extends State<DebatePage> {
               Expanded(
                 child: ChoiceChip(
                   side: BorderSide(
-        color: Colors.black, // Custom border color
-        width: 0, // Border width
-      ),
+                    color: Colors.black, // Custom border color
+                    width: 0, // Border width
+                  ),
                   avatar: null,
                   showCheckmark: false,
                   labelStyle: TextStyle(color: Colors.white),
@@ -178,14 +177,13 @@ class _DebatePageState extends State<DebatePage> {
               ),
               Expanded(
                 child: ChoiceChip(
-                   side: BorderSide(
-        color: Colors.black, // Custom border color
-        width: 0, // Border width
-      ),
+                  side: BorderSide(
+                    color: Colors.black, // Custom border color
+                    width: 0, // Border width
+                  ),
                   avatar: null,
                   showCheckmark: false,
                   labelStyle: TextStyle(color: Colors.white),
-                  
                   labelPadding: EdgeInsets.all(8),
                   backgroundColor: Color.fromRGBO(212, 77, 92, 0.4),
                   selectedColor: Color.fromRGBO(212, 77, 92, 1),
@@ -246,16 +244,42 @@ class _DebatePageState extends State<DebatePage> {
           ),
           // Comments
           Expanded(
-            child: ListView.builder(
-                itemCount: comments.length,
-                itemBuilder: (context, index) {
-                  return CommentTile(
-                    comment: comments[index][0],
-                    opinion: comments[index][1],
-                    likes: [],
-                  );
-                }),
-          )
+            child: StreamBuilder(
+              stream: firestoreService
+                  .getCommentsStream(widget.debateId), // Use widget.debateId
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text("No comments yet."));
+                }
+
+                final comments = snapshot.data!.docs;
+
+                return ListView.builder(
+                  itemCount: comments.length,
+                  itemBuilder: (context, index) {
+                    final comment = comments[index];
+                    String content = comment['content'];
+                    Timestamp timestamp = comment['timestamp'];
+                    // return ListTile(
+                    //   title: Text(content),
+                    //   subtitle: Text(DateFormat('MMM dd, yyyy')
+                    //       .format(timestamp.toDate())),
+                    // );
+                     return CommentTile(
+      timestamp: DateFormat('MMM dd, yyyy')
+                          .format(timestamp.toDate()).toString(),
+      opinion: 0,
+      comment: content,
+    );
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

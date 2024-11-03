@@ -7,13 +7,16 @@ import 'package:opinio/components/like_button.dart';
 
 class CommentTile extends StatefulWidget {
   final String comment;
+  final String timestamp; //timestamp in date
   final int opinion; //0 is for 1 is against
-  final List<String> likes;
-  CommentTile(
-      {super.key,
-      required this.comment,
-      required this.opinion,
-      required this.likes});
+  // final List<String> likes;
+  CommentTile({
+    super.key,
+    required this.comment,
+    required this.opinion,
+    required this.timestamp,
+    // required this.likes
+  });
 
   @override
   State<CommentTile> createState() => _CommentTileState();
@@ -67,34 +70,45 @@ class _CommentTileState extends State<CommentTile> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              //text
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: 300,
-                  child: Expanded(
-                    child: Text(
-                      widget.comment,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                      //So that text goes to new line
-                      overflow: TextOverflow.visible,
-                    ),
-                  ),
-                ),
+         child:Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between comment and like button
+  children: [
+    // Text Column
+    Expanded( // Allows text to take up remaining space
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the left
+        children: [
+          // The comment
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.comment,
+              style: TextStyle(
+                color: Colors.white,
               ),
-              Spacer(),
-              //icon
-              // Align(alignment:Alignment.topLeft,child:  LikeButton(size: 24,))
-              LikeButton(
-                size: 24,
-              ),
-            ],
+            ),
           ),
+          // The timestamp
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.timestamp,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+    // Like Button
+    LikeButton(
+      size: 24,
+    ),
+  ],
+)
+
         ),
       ),
     );

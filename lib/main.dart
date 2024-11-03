@@ -46,8 +46,8 @@ class MyApp extends StatelessWidget {
         '/liked_comments_page' : (context) => LikedCommentsPage(),
         '/liked_debates_page' : (context) => LikedDebatesPage(imagePath: '', title: '',),
         '/change_profile_page': (context) => ChangeProfilePage(),
-        '/stats_page' : (context) => StatsPage(imagePath: '', statement: '',),
-        '/summary_page' : (context) => Summarypage(imagePath: '', statement: '',),
+        // '/stats_page' : (context) => StatsPage(imagePath: '', title: '', name: '',),
+        // '/summary_page' : (context) => Summarypage(imagePath: '', title: '', name: '',),
       },
       theme: Provider.of<ThemeProvider>(context).themeData,
     );

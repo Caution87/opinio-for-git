@@ -9,14 +9,14 @@ import 'package:opinio/pages/debate_page.dart';
 class DebateTile extends StatefulWidget {
   final String title;
   final String imagePath;
-  final int likes;
-  final String statement;//0 is for 1 is against 2 is neutral
-  DebateTile(
-      {super.key,
-      required this.title,
-      required this.imagePath,
-      required this.likes,
-      required this.statement,});
+  final String debateId;
+  final int likes; //0 is for 1 is against 2 is neutral
+  DebateTile({
+    super.key,
+    required this.title,
+    required this.imagePath,
+    required this.likes, required this.debateId,
+  });
 
   @override
   State<DebateTile> createState() => _DebateTileState();
@@ -38,39 +38,15 @@ class _DebateTileState extends State<DebateTile> {
     });
   }
 
-  List<List<String>> debateTiles = [
-    [
-      "Global Warming is the major problem to face this century.",
-      'lib/Opinio_Images/Global_Warming.jpg'
-    ],
-    ["Anti-litter laws need to be stricter", 'lib/Opinio_Images/litter.jpg'],
-    ["Lewis Hamilton should retire.", 'lib/Opinio_Images/lewis_hamilton.jpg'],
-    [
-      "CGPA is a determining factor for placements.",
-      'lib/Opinio_Images/CGPA.jpg'
-    ],
-    [
-      'The new Samsung Galaxy Book Edge is worth it.',
-      'lib/Opinio_Images/Samsung-Galaxy-Book-4-series-official-2-jpg.webp'
-    ],
-    [
-      'South Indian Food is the best cuisine.',
-      'lib/Opinio_Images/south indian food.jpg'
-    ],
-    ['Mahesh Babu is a gifted actor.', 'lib/Opinio_Images/Mahesh-Babu.jpg'],
-    [
-      "Vinesh Phogat shouldn't have been disqualified.",
-      'lib/Opinio_Images/Vinesh Phogat.jpg'
-    ],
-  ];
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => DebatePage(
-                  imagePath: widget.imagePath,
-                  statement: widget.title,
+                  imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                  title: widget.title,
+                  debateId: widget.debateId,
                 )));
       },
       child: Column(

@@ -6,22 +6,20 @@ import 'package:opinio/pages/stats_page.dart';
 import 'package:opinio/pages/summary_page.dart';
 
 class DebatePageButton extends StatelessWidget {
-  final String title;
   final String imagePath;
-  final String statement;
+  final String name;
+  final String debateId;
+  final String title;
   bool shouldColor;
   int number; //0 is opinions 1 is summary and 2 is stats
-  DebatePageButton(
-      {super.key,
-      required this.title,
-      required this.shouldColor,
-      required this.number,
-      required this.imagePath, required this.statement});
-  List<String> routesOfDebatePage = [
-    '/debate_page',
-    '/summary_page',
-    '/stats_page'
-  ];
+  DebatePageButton({
+    super.key,
+    required this.shouldColor,
+    required this.number,
+    required this.imagePath,
+    required this.name,
+    required this.debateId, required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +31,22 @@ class DebatePageButton extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DebatePage(imagePath: imagePath, statement: statement,),
-                      ));
+                    builder: (context) => DebatePage(
+                      imagePath: imagePath,
+                      debateId: debateId,
+                      title: title,
+                    ),
+                  ));
               break;
             case 1:
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Summarypage(
-                            imagePath: imagePath, statement: statement,
+                            imagePath: imagePath,
+                            name: 'SUMMARY',
+                            debateId: debateId,
+                      title: title,
                           )));
               break;
             case 2:
@@ -49,7 +54,10 @@ class DebatePageButton extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => StatsPage(
-                            imagePath: imagePath,statement:statement
+                            imagePath: imagePath,
+                            name: 'STATISTICS',
+                           debateId: debateId,
+                      title: title,
                           )));
               break;
             default:
@@ -61,7 +69,7 @@ class DebatePageButton extends StatelessWidget {
               child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              title,
+              name,
               style: TextStyle(
                   color: Theme.of(context).colorScheme.inversePrimary),
             ),
