@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:opinio/components/debate_tile.dart';
 import 'package:opinio/pages/post_debate_page.dart';
 import 'package:opinio/pages/practice_page_comments.dart';
 import 'package:opinio/services/firestore.dart';
@@ -55,6 +56,7 @@ class _PracticePageState extends State<PracticePage> {
               // Get data from each debate
               String title = debate['title'];
               Timestamp timestamp = debate['timestamp'];
+              //get debate id
 
               // Return as a ListTile with GestureDetector
               return GestureDetector(
@@ -68,11 +70,13 @@ class _PracticePageState extends State<PracticePage> {
                     ),
                   );
                 },
-                child: ListTile(
-                  title: Text(title),
-                  subtitle: Text(
-                      DateFormat('MMM dd, yyyy').format(timestamp.toDate())),
-                ),
+                // child: ListTile(
+                //   title: Text(title),
+                //   subtitle: Text(
+                //       DateFormat('MMM dd, yyyy').format(timestamp.toDate())),
+                // ),
+                child: DebateTile(title: title, imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                 likes: 100, statement: title, ),
               );
             },
           );

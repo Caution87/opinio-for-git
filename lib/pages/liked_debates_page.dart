@@ -40,7 +40,7 @@ class _LikedDebatesPageState extends State<LikedDebatesPage> {
       body: ListView.builder(
           itemCount: likedDebates.length,
           itemBuilder: (contex, index) {
-            return DebateTile(title: widget.title, imagePath: widget.imagePath, index:1, likes: 7, statement: '',opinion: 2,);
+            return DebateTile(title: widget.title, imagePath: widget.imagePath, likes: 7, statement: '',);
             //return DebateTile(title: likedDebates[index][0], imagePath: likedDebates[index][1])
           }),
     );

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:opinio/pages/post_comments_page.dart';
 import 'package:opinio/services/firestore.dart';
 
 class PracticePageComments extends StatefulWidget {
@@ -52,7 +53,13 @@ class _PracticePageCommentsState extends State<PracticePageComments> {
         // title: const Text("Practice Page Comments"),
         title: Text(currentUser.email!),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: (){},
+      floatingActionButton: FloatingActionButton(onPressed:()
+      {Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostCommentsPage(debateId: widget.debateId) // Pass data to the next page
+                    ),
+                  );},
       child: Icon(Icons.add),),
       body: Column(
         children: [

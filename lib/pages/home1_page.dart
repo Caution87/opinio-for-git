@@ -244,10 +244,8 @@ class _Home1PageState extends State<Home1Page> {
                 return DebateTile(
                   title: debateTiles[index][0],
                   imagePath: debateTiles[index][1],
-                  index: index,
                   likes: debateTiles[index][2],
                   statement: debateTiles[index][0],
-                  opinion: 2,
                 );
               },
               childCount: debateTiles.length,

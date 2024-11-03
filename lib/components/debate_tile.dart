@@ -9,17 +9,14 @@ import 'package:opinio/pages/debate_page.dart';
 class DebateTile extends StatefulWidget {
   final String title;
   final String imagePath;
-  final int index;
   final int likes;
-  final String statement;
-  final int opinion;//0 is for 1 is against 2 is neutral
+  final String statement;//0 is for 1 is against 2 is neutral
   DebateTile(
       {super.key,
       required this.title,
       required this.imagePath,
-      required this.index,
       required this.likes,
-      required this.statement, required this.opinion});
+      required this.statement,});
 
   @override
   State<DebateTile> createState() => _DebateTileState();
@@ -72,8 +69,8 @@ class _DebateTileState extends State<DebateTile> {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => DebatePage(
-                  imagePath: debateTiles[widget.index][1],
-                  statement: debateTiles[widget.index][0],
+                  imagePath: widget.imagePath,
+                  statement: widget.title,
                 )));
       },
       child: Column(
