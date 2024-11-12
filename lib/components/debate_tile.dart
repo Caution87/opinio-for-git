@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
@@ -10,12 +11,17 @@ class DebateTile extends StatefulWidget {
   final String title;
   final String imagePath;
   final String debateId;
-  final int likes; //0 is for 1 is against 2 is neutral
+  final List<String> likes;
+  final List<String> forOpinions;
+  final List<String> againstOpinions;
+  //0 is for 1 is against 2 is neutral
+
   DebateTile({
     super.key,
     required this.title,
     required this.imagePath,
-    required this.likes, required this.debateId,
+    required this.likes,
+    required this.debateId, required this.forOpinions, required this.againstOpinions, 
   });
 
   @override
@@ -29,13 +35,28 @@ class _DebateTileState extends State<DebateTile> {
   @override
   void initState() {
     super.initState();
+    isLiked = widget.likes.contains(currentUser.email);
   }
 
-  //unlike and like
-  void toggleLike() {
+  Future<bool> toggleLike(bool isCurrentlyLiked) async {
     setState(() {
-      isLiked = !isLiked;
+      isLiked = !isCurrentlyLiked;
     });
+
+    DocumentReference debateRef =
+        FirebaseFirestore.instance.collection('debates').doc(widget.debateId);
+
+    if (isLiked) {
+      await debateRef.update({
+        'likes': FieldValue.arrayUnion([currentUser.email])
+      });
+    } else {
+      await debateRef.update({
+        'likes': FieldValue.arrayRemove([currentUser.email])
+      });
+    }
+
+    return isLiked; // Return the updated isLiked state
   }
 
   @override
@@ -46,7 +67,7 @@ class _DebateTileState extends State<DebateTile> {
             builder: (context) => DebatePage(
                   imagePath: "lib/Opinio_Images/Global_Warming.jpg",
                   title: widget.title,
-                  debateId: widget.debateId,
+                  debateId: widget.debateId, forOpinions: widget.forOpinions, againstOpinions: widget.againstOpinions,
                 )));
       },
       child: Column(
@@ -107,12 +128,22 @@ class _DebateTileState extends State<DebateTile> {
                         height: 70,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: LikeButton(
-                          size: 24,
-                          likeCount: widget.likes,
-                        ),
-                      )
+                          padding: const EdgeInsets.all(8.0),
+                          child: LikeButton(
+                            size: 24,
+                            likeCount: widget.likes.length,
+                            isLiked: isLiked, // Set the initial state
+                            onTap: (isLiked) async {
+                              return toggleLike(
+                                  isLiked); // Trigger animation by returning updated state
+                            },
+                            likeBuilder: (isLiked) {
+                              return Icon(
+                                Icons.favorite,
+                                color: isLiked ? Colors.pink : Colors.grey,
+                              );
+                            },
+                          ))
                     ],
                   ),
                 ],

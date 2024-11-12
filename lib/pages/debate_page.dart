@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, unused_import
+// ignore_for_file: prefer_const_constructors_in_immutables, unused_import, sort_child_properties_last
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,8 +17,16 @@ class DebatePage extends StatefulWidget {
   final String debateId;
   final String imagePath;
   final String title;
-  const DebatePage(
-      {super.key, required this.debateId, required this.imagePath, required this.title});
+  final List<String> forOpinions;
+  final List<String> againstOpinions;
+  const DebatePage({
+    super.key,
+    required this.debateId,
+    required this.imagePath,
+    required this.title,
+    required this.forOpinions,
+    required this.againstOpinions,
+  });
 
   @override
   State<DebatePage> createState() => _DebatePageState();
@@ -30,18 +38,84 @@ class _DebatePageState extends State<DebatePage> {
   //get access to firestore
   final FirestoreService firestoreService = FirestoreService();
 
-  var _isSelectedFor = false;
-  var _isSelectedAgainst = false;
-
+  bool _isSelectedFor = false;
+  bool _isSelectedAgainst = false;
   bool isLiked = false;
 
   @override
   void initState() {
     super.initState();
+    _isSelectedFor = widget.forOpinions.contains(currentUser.email!);
+    _isSelectedAgainst = widget.againstOpinions.contains(currentUser.email!);
+  }
+
+  // void toggleFor() {
+  //   setState(() {
+  //     _isSelectedFor = !_isSelectedFor;
+  //     if (_isSelectedAgainst) {
+  //       _isSelectedAgainst = false;
+  //     }
+  //   });
+  // }
+  Future<void> toggleFor() async {
+    // Toggle the selection
+    bool newSelection = !_isSelectedFor;
+
+    // Update the UI state
+    setState(() {
+      _isSelectedFor = newSelection;
+      if (_isSelectedAgainst) {
+        _isSelectedAgainst = false;
+      }
+    });
+
+    // Firestore updates
+    DocumentReference debateRef =
+        FirebaseFirestore.instance.collection('debates').doc(widget.debateId);
+
+    if (newSelection) {
+      await debateRef.update({
+        'forOpinions': FieldValue.arrayUnion([currentUser.email]),
+        'againstOpinions': FieldValue.arrayRemove([currentUser.email]),
+      });
+    } else {
+      await debateRef.update({
+        'forOpinions': FieldValue.arrayRemove([currentUser.email]),
+      });
+    }
+  }
+
+  Future<void> toggleAgainst() async {
+    // Toggle the selection
+    bool newSelection = !_isSelectedAgainst;
+
+    // Update the UI state
+    setState(() {
+      _isSelectedAgainst = newSelection;
+      if (_isSelectedFor) {
+        _isSelectedFor = false;
+      }
+    });
+
+    // Firestore updates
+    DocumentReference debateRef =
+        FirebaseFirestore.instance.collection('debates').doc(widget.debateId);
+
+    if (newSelection) {
+      await debateRef.update({
+        'againstOpinions': FieldValue.arrayUnion([currentUser.email]),
+        'forOpinions': FieldValue.arrayRemove([currentUser.email]),
+      });
+    } else {
+      await debateRef.update({
+        'againstOpinions': FieldValue.arrayRemove([currentUser.email]),
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
@@ -62,14 +136,18 @@ class _DebatePageState extends State<DebatePage> {
               size: 36,
             )),
       ),
-      floatingActionButton: FloatingActionButton(onPressed:()
-      {Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PostCommentsPage(debateId: widget.debateId) // Pass data to the next page
-                    ),
-                  );},
-      child: Icon(Icons.add),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PostCommentsPage(
+                    debateId: widget.debateId) // Pass data to the next page
+                ),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         //Till image to for against
@@ -108,20 +186,26 @@ class _DebatePageState extends State<DebatePage> {
               DebatePageButton(
                 number: 0,
                 shouldColor: true,
-                imagePath: "lib/Opinio_Images/Global_Warming.jpg", 
-                name: 'OPINIONS', debateId: widget.debateId, title: widget.title,
+                imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                name: 'OPINIONS',
+                debateId: widget.debateId,
+                title: widget.title,
+                forOpinions: widget.forOpinions,
+                againstOpinions: widget.againstOpinions,
               ),
               //Space
               const SizedBox(
                 width: 5,
               ),
               DebatePageButton(
-                
                 imagePath: "lib/Opinio_Images/Global_Warming.jpg",
                 title: widget.title,
                 number: 1,
                 shouldColor: false,
-                 name: 'SUMMARY', debateId:  widget.debateId,
+                name: 'SUMMARY',
+                debateId: widget.debateId,
+                forOpinions: widget.forOpinions,
+                againstOpinions: widget.againstOpinions,
               ),
               const SizedBox(
                 width: 5,
@@ -130,8 +214,11 @@ class _DebatePageState extends State<DebatePage> {
                 imagePath: "lib/Opinio_Images/Global_Warming.jpg",
                 number: 2,
                 shouldColor: false,
-                 name: 'STATISTICS', debateId:  widget.debateId,
-                 title: widget.title,
+                name: 'STATISTICS',
+                debateId: widget.debateId,
+                title: widget.title,
+                forOpinions: widget.forOpinions,
+                againstOpinions: widget.againstOpinions,
               ),
             ],
           ),
@@ -140,82 +227,45 @@ class _DebatePageState extends State<DebatePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // ForOrAgainstButton(
-              //   type: true,
-              // ),
-              //For or against stuff
-              Expanded(
-                child: ChoiceChip(
-                  side: BorderSide(
-                    color: Colors.black, // Custom border color
-                    width: 0, // Border width
-                  ),
-                  avatar: null,
-                  showCheckmark: false,
-                  labelStyle: TextStyle(color: Colors.white),
-                  labelPadding: EdgeInsets.all(8),
-                  backgroundColor: Color.fromRGBO(68, 161, 160, 0.4),
-                  selectedColor: Color.fromRGBO(68, 161, 160, 1),
-                  label: Container(
-                    height: 50,
+              GestureDetector(
+                onTap: () async => await toggleFor(),
+                child: Container(
+                  width: screenWidth * 0.5,
+                  color: _isSelectedFor
+                      ? Color.fromRGBO(68, 161, 160, 1)
+                      : Color.fromRGBO(68, 161, 160, 0.4),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Center(
-                        child: Text(
-                      "FOR",
-                      style: TextStyle(fontSize: 20),
-                    )),
-                  ),
-                  selected: _isSelectedFor,
-                  onSelected: (isSelectedFor) {
-                    setState(() {
-                      _isSelectedFor = isSelectedFor;
-                      if (isSelectedFor) {
-                        _isSelectedAgainst = false;
-                      }
-                    });
-                  },
-                ),
-              ),
-              Expanded(
-                child: ChoiceChip(
-                  side: BorderSide(
-                    color: Colors.black, // Custom border color
-                    width: 0, // Border width
-                  ),
-                  avatar: null,
-                  showCheckmark: false,
-                  labelStyle: TextStyle(color: Colors.white),
-                  labelPadding: EdgeInsets.all(8),
-                  backgroundColor: Color.fromRGBO(212, 77, 92, 0.4),
-                  selectedColor: Color.fromRGBO(212, 77, 92, 1),
-                  label: Container(
-                    height: 50,
-                    child: Center(
-                      child: Text("AGAINST", style: TextStyle(fontSize: 20)),
+                      child: Text(
+                        "FOR",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
-                  selected: _isSelectedAgainst,
-                  onSelected: (isSelectedAgainst) {
-                    setState(() {
-                      _isSelectedAgainst = isSelectedAgainst;
-                      if (isSelectedAgainst) {
-                        _isSelectedFor = false;
-                      }
-                    });
-                  },
+                ),
+              ),
+              GestureDetector(
+                onTap: () async => await toggleAgainst(),
+                child: Container(
+                  width: screenWidth * 0.5,
+                  color: _isSelectedAgainst
+                      ? Color.fromRGBO(212, 77, 92, 1)
+                      : Color.fromRGBO(212, 77, 92, 0.4),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(
+                        "AGAINST",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-          // Padding(
-          //     padding: const EdgeInsets.all(8),
-          //     child: Container(
-          //         decoration: BoxDecoration(
-          //             color: Colors.red,
-          //             borderRadius: BorderRadius.circular(2)),
-          //         child: Text(
-          //           widget.statement,
-          //           style: TextStyle(color: Colors.white, fontSize: 16),
-          //         ))),
+
           //sort
           Row(
             children: [
@@ -269,12 +319,13 @@ class _DebatePageState extends State<DebatePage> {
                     //   subtitle: Text(DateFormat('MMM dd, yyyy')
                     //       .format(timestamp.toDate())),
                     // );
-                     return CommentTile(
-      timestamp: DateFormat('MMM dd, yyyy')
-                          .format(timestamp.toDate()).toString(),
-      opinion: 0,
-      comment: content,
-    );
+                    return CommentTile(
+                      timestamp: DateFormat('MMM dd, yyyy')
+                          .format(timestamp.toDate())
+                          .toString(),
+                      opinion: 0,
+                      comment: content,
+                    );
                   },
                 );
               },

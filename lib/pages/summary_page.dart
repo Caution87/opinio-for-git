@@ -7,19 +7,28 @@ class Summarypage extends StatefulWidget {
   final String title;
   final String name;
   final String debateId;
-  const Summarypage({super.key, required this.imagePath, required this.title, required this.name, required this.debateId});
+  final List<String> forOpinions;
+  final List<String> againstOpinions;
+  const Summarypage(
+      {super.key,
+      required this.imagePath,
+      required this.title,
+      required this.name,
+      required this.debateId,
+      required this.forOpinions,
+      required this.againstOpinions});
 
   @override
   State<Summarypage> createState() => _SummarypageState();
 }
 
 class _SummarypageState extends State<Summarypage> {
-    var _isSelectedFor = false;
+  var _isSelectedFor = false;
   var _isSelectedAgainst = false;
 
   bool isLiked = false;
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
@@ -55,18 +64,18 @@ class _SummarypageState extends State<Summarypage> {
                   ),
                 ),
               ),
-                SizedBox(height: 10),
-          // Statement
-          // Text(widget.statement),
-          // SizedBox(height: 10),
-          Container(
-              child: Text(
-            widget.title,
-            style: TextStyle(
-                color: Theme.of(context).colorScheme.inversePrimary,
-                fontSize: 16),
-            textAlign: TextAlign.center,
-          )),
+              SizedBox(height: 10),
+              // Statement
+              // Text(widget.statement),
+              // SizedBox(height: 10),
+              Container(
+                  child: Text(
+                widget.title,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    fontSize: 16),
+                textAlign: TextAlign.center,
+              )),
 
               SizedBox(height: 10),
               //Opinion summary stats
@@ -77,7 +86,11 @@ class _SummarypageState extends State<Summarypage> {
                     imagePath: widget.imagePath,
                     shouldColor: false,
                     number: 0,
-                    name: 'OPINIONS', debateId: widget.debateId,title: widget.title,
+                    name: 'OPINIONS',
+                    debateId: widget.debateId,
+                    title: widget.title,
+                    forOpinions: widget.forOpinions,
+                    againstOpinions: widget.againstOpinions,
                   ),
                   //Space
                   const SizedBox(
@@ -86,7 +99,12 @@ class _SummarypageState extends State<Summarypage> {
                   DebatePageButton(
                     imagePath: widget.imagePath,
                     shouldColor: true,
-                    number: 1, name: 'SUMMARY', debateId: widget.debateId,title: widget.title,
+                    number: 1,
+                    name: 'SUMMARY',
+                    debateId: widget.debateId,
+                    title: widget.title,
+                    forOpinions: widget.forOpinions,
+                    againstOpinions: widget.againstOpinions,
                   ),
                   const SizedBox(
                     width: 5,
@@ -94,11 +112,16 @@ class _SummarypageState extends State<Summarypage> {
                   DebatePageButton(
                     imagePath: widget.imagePath,
                     shouldColor: false,
-                    number: 2, name: 'STATISTICS', debateId: widget.debateId,title: widget.title,
+                    number: 2,
+                    name: 'STATISTICS',
+                    debateId: widget.debateId,
+                    title: widget.title,
+                    forOpinions: widget.forOpinions,
+                    againstOpinions: widget.againstOpinions,
                   ),
                 ],
               ),
-              const SizedBox(height: 10),         
+              const SizedBox(height: 10),
             ]));
   }
 }

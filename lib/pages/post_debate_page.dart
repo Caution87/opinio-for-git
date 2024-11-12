@@ -25,6 +25,9 @@ class _PostDebatePageState extends State<PostDebatePage> {
         'UserEmail': currentUser.email,
         'title': debateContentController.text,
         'timestamp': Timestamp.now(),
+        'likes': [],
+        'forOpinions':[],
+        'againstOpinions':[]
       });
     }
     debateContentController.clear();

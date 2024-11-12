@@ -10,6 +10,8 @@ class DebatePageButton extends StatelessWidget {
   final String name;
   final String debateId;
   final String title;
+  final List<String> forOpinions;
+  final List<String> againstOpinions;
   bool shouldColor;
   int number; //0 is opinions 1 is summary and 2 is stats
   DebatePageButton({
@@ -18,7 +20,10 @@ class DebatePageButton extends StatelessWidget {
     required this.number,
     required this.imagePath,
     required this.name,
-    required this.debateId, required this.title,
+    required this.debateId,
+    required this.title,
+    required this.forOpinions,
+    required this.againstOpinions,
   });
 
   @override
@@ -35,6 +40,8 @@ class DebatePageButton extends StatelessWidget {
                       imagePath: imagePath,
                       debateId: debateId,
                       title: title,
+                      forOpinions: forOpinions,
+                      againstOpinions: againstOpinions,
                     ),
                   ));
               break;
@@ -46,7 +53,9 @@ class DebatePageButton extends StatelessWidget {
                             imagePath: imagePath,
                             name: 'SUMMARY',
                             debateId: debateId,
-                      title: title,
+                            title: title,
+                            forOpinions: forOpinions,
+                            againstOpinions:againstOpinions,
                           )));
               break;
             case 2:
@@ -56,8 +65,10 @@ class DebatePageButton extends StatelessWidget {
                       builder: (context) => StatsPage(
                             imagePath: imagePath,
                             name: 'STATISTICS',
-                           debateId: debateId,
-                      title: title,
+                            debateId: debateId,
+                            title: title,
+                            forOpinions: forOpinions,
+                            againstOpinions: againstOpinions,
                           )));
               break;
             default:

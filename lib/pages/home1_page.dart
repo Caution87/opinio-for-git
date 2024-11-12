@@ -210,7 +210,7 @@ class _Home1PageState extends State<Home1Page> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DebatePage(
-                          debateId: debate.id, imagePath: "lib/Opinio_Images/Global_Warming.jpg", title: title,), // Pass data to the next page
+                          debateId: debate.id, imagePath: "lib/Opinio_Images/Global_Warming.jpg", title: title, forOpinions: List<String>.from(debate['forOpinions']??[]), againstOpinions: List<String>.from(debate['againstOpinions']??[]),), // Pass data to the next page
                     ),
                   );
                 },
@@ -222,7 +222,8 @@ class _Home1PageState extends State<Home1Page> {
                 child: DebateTile(
                   title: title,
                   imagePath: "lib/Opinio_Images/Global_Warming.jpg",
-                  likes: 99, debateId: debate.id,
+                  likes: List<String>.from(debate['likes']??[]), debateId: debate.id, forOpinions: List<String>.from(debate['forOpinions']??[]), againstOpinions: List<String>.from(debate['againstOpinions']??[]),
+                  
                 ),
               );
             },
