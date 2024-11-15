@@ -19,14 +19,11 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    //ChangeNotifierProvider is for dark and light mode
-    ChangeNotifierProvider(
-    create: (context) =>ThemeProvider(),
-    child: const MyApp()));
+      //ChangeNotifierProvider is for dark and light mode
+      ChangeNotifierProvider(
+          create: (context) => ThemeProvider(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -35,16 +32,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: AuthPage(),
       routes: {
-        '/auth_page' : (context) => AuthPage(),
-        '/home1_page' : (context) => Home1Page(),
-        '/home_page' : (context) => HomePage(),
-        '/settings_page' : (context) => SettingsPage(),
-        '/search_page' : (context) => SearchPage(),
+        '/auth_page': (context) => AuthPage(),
+        '/home1_page': (context) => Home1Page(),
+        '/home_page': (context) => HomePage(),
+        '/settings_page': (context) => SettingsPage(),
+        '/search_page': (context) => SearchPage(),
         // '/debate_page' : (context) => DebatePage(imagePath: null,),
-        '/liked_comments_page' : (context) => LikedCommentsPage(),
-        '/liked_debates_page' : (context) => LikedDebatesPage(imagePath: '', title: '',),
+        '/liked_comments_page': (context) => LikedCommentsPage(),
+        '/liked_debates_page': (context) => LikedDebatesPage(
+              imagePath: '',
+              title: '',
+            ),
         '/change_profile_page': (context) => ChangeProfilePage(),
         // '/stats_page' : (context) => StatsPage(imagePath: '', title: '', name: '',),
         // '/summary_page' : (context) => Summarypage(imagePath: '', title: '', name: '',),

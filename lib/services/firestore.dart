@@ -18,7 +18,7 @@ class FirestoreService {
   Stream<QuerySnapshot> getDebatesStream() {
     final debatesStream = FirebaseFirestore.instance
         .collection('debates')
-        .orderBy('timestamp', descending: true)
+        .orderBy('timestamp',descending: true)
         .snapshots();
     return debatesStream;
   }

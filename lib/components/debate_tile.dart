@@ -48,11 +48,13 @@ class _DebateTileState extends State<DebateTile> {
 
     if (isLiked) {
       await debateRef.update({
-        'likes': FieldValue.arrayUnion([currentUser.email])
+        'likes': FieldValue.arrayUnion([currentUser.email]),
+        'likeCount': FieldValue.increment(1),
       });
     } else {
       await debateRef.update({
-        'likes': FieldValue.arrayRemove([currentUser.email])
+        'likes': FieldValue.arrayRemove([currentUser.email]),
+        'likeCount': FieldValue.increment(-1),
       });
     }
 

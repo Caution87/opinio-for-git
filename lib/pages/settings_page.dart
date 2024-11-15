@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:opinio/components/settings_tile.dart';
 import 'package:opinio/components/settings_tile_with_cupertino.dart';
+import 'package:opinio/pages/home_page.dart';
 import 'package:opinio/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,15 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        leading: null,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
+
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         title: Text(
           "S E T T I N G S",
@@ -39,7 +48,9 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             SettingsTile(
-                property: 'Logout', icon: Icon(Icons.logout), onTap: signUserOut),
+                property: 'Logout',
+                icon: Icon(Icons.logout),
+                onTap: signUserOut),
             SettingsTile(
                 property: 'Change Password',
                 icon: Icon(Icons.password),
@@ -60,8 +71,9 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {},
               icon: Icon(Icons.notification_important),
             ),
-            SettingsTile(property: 'About', icon: Icon(Icons.info), onTap: () {}),
-              SettingsTile(
+            SettingsTile(
+                property: 'About', icon: Icon(Icons.info), onTap: () {}),
+            SettingsTile(
                 property: 'Change Password',
                 icon: Icon(Icons.password),
                 onTap: () {}),

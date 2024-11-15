@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:opinio/components/my_text_field.dart';
+import 'package:opinio/pages/home1_page.dart';
+import 'package:opinio/pages/home_page.dart';
 
 class PostDebatePage extends StatefulWidget {
   const PostDebatePage({super.key});
@@ -26,9 +28,12 @@ class _PostDebatePageState extends State<PostDebatePage> {
         'title': debateContentController.text,
         'timestamp': Timestamp.now(),
         'likes': [],
-        'forOpinions':[],
-        'againstOpinions':[]
+        'forOpinions': [],
+        'againstOpinions': [],
+        'likeCount': 0
       });
+      Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => HomePage()));
     }
     debateContentController.clear();
   }
