@@ -38,5 +38,18 @@ class FirestoreService {
         .snapshots();                 // Return the real-time stream of comments
     return commentsStream;
   }
+
+  //search function
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  // Function to search debates by title
+  Stream<QuerySnapshot> searchDebates(String query) {
+    return _db
+        .collection('debates')
+        .where('title', isGreaterThanOrEqualTo: query)
+        .where('title', isLessThanOrEqualTo: '$query\uf8ff')
+        .orderBy('title')
+        .snapshots();
+  }
 }
 

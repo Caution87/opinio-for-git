@@ -5,6 +5,7 @@ import 'package:opinio/pages/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:opinio/pages/change_profile_page.dart';
 import 'package:opinio/pages/debate_page.dart';
+import 'package:opinio/pages/env_loader.dart';
 import 'package:opinio/pages/home1_page.dart';
 import 'package:opinio/pages/home_page.dart';
 import 'package:opinio/pages/liked_comments_page.dart';
@@ -17,13 +18,22 @@ import 'package:opinio/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Load environment variables (e.g., API key)
+  await Env.load();
+
   runApp(
-      //ChangeNotifierProvider is for dark and light mode
-      ChangeNotifierProvider(
-          create: (context) => ThemeProvider(), child: const MyApp()));
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
