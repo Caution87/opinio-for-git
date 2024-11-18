@@ -73,10 +73,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             SettingsTile(
                 property: 'About', icon: Icon(Icons.info), onTap: () {}),
-            SettingsTile(
-                property: 'Change Password',
-                icon: Icon(Icons.password),
-                onTap: () {}),
           ],
         ),
       ),
