@@ -32,8 +32,7 @@ class _PostDebatePageState extends State<PostDebatePage> {
         'againstOpinions': [],
         'likeCount': 0
       });
-      Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => HomePage()));
+      Navigator.pop(context);
     }
     debateContentController.clear();
   }

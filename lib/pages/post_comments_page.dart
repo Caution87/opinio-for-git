@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:opinio/components/my_text_field.dart';
+import 'package:opinio/pages/home_page.dart';
 import 'package:opinio/services/firestore.dart';
 
 class PostCommentsPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _PostCommentsPageState extends State<PostCommentsPage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   //post debate
-  void postComment(){
+  void postComment() {
     if (commentController.text.isNotEmpty) {
       //store in firebase
       FirebaseFirestore.instance
@@ -33,6 +34,7 @@ class _PostCommentsPageState extends State<PostCommentsPage> {
         'content': commentController.text,
         'timestamp': Timestamp.now(),
       });
+      Navigator.pop(context);
     }
     commentController.clear();
   }
