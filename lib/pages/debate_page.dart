@@ -148,6 +148,7 @@ class _DebatePageState extends State<DebatePage> {
         },
         child: Icon(Icons.add),
       ),
+      //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         //Till image to for against

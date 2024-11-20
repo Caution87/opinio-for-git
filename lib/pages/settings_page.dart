@@ -25,14 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
+        leading: null,
 
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         title: Text(

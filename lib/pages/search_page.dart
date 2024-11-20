@@ -16,8 +16,13 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Search Debates"),
-        backgroundColor: Colors.teal,
+        title: Text(
+          "O P I N I O",
+          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+        ),
+        leading: null,
+        centerTitle: true,
+        //backgroundColor: Colors.teal,
       ),
       body: Column(
         children: [
@@ -48,57 +53,61 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           Expanded(
-  child: StreamBuilder<QuerySnapshot>(
-    stream: searchDebates(searchQuery),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: CircularProgressIndicator());
-      }
-      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-        return Center(child: Text('No debates found.'));
-      }
+            child: StreamBuilder<QuerySnapshot>(
+              stream: searchDebates(searchQuery),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Center(child: Text('No debates found.'));
+                }
 
-      final debates = snapshot.data!.docs;
+                final debates = snapshot.data!.docs;
 
-      return ListView.builder(
-        itemCount: debates.length,
-        itemBuilder: (context, index) {
-          var debate = debates[index];
-          Map<String, dynamic> data = debate.data() as Map<String, dynamic>;
-          
-          String title = data['title'] ?? '';
-          Timestamp timestamp = data['timestamp'];
-          
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DebatePage(
-                    debateId: debate.id,
-                    imagePath: "lib/Opinio_Images/Global_Warming.jpg",
-                    title: title,
-                    forOpinions: List<String>.from(data['forOpinions'] ?? []),
-                    againstOpinions: List<String>.from(data['againstOpinions'] ?? []),
-                  ),
-                ),
-              );
-            },
-            child: DebateTile(
-              title: title,
-              imagePath: "lib/Opinio_Images/Global_Warming.jpg",
-              likes: List<String>.from(data['likes'] ?? []),
-              debateId: debate.id,
-              forOpinions: List<String>.from(data['forOpinions'] ?? []),
-              againstOpinions: List<String>.from(data['againstOpinions'] ?? []),
+                return ListView.builder(
+                  itemCount: debates.length,
+                  itemBuilder: (context, index) {
+                    var debate = debates[index];
+                    Map<String, dynamic> data =
+                        debate.data() as Map<String, dynamic>;
+
+                    String title = data['title'] ?? '';
+                    Timestamp timestamp = data['timestamp'];
+
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DebatePage(
+                              debateId: debate.id,
+                              imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                              title: title,
+                              forOpinions:
+                                  List<String>.from(data['forOpinions'] ?? []),
+                              againstOpinions: List<String>.from(
+                                  data['againstOpinions'] ?? []),
+                            ),
+                          ),
+                        );
+                      },
+                      child: DebateTile(
+                        title: title,
+                        imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                        likes: List<String>.from(data['likes'] ?? []),
+                        debateId: debate.id,
+                        forOpinions:
+                            List<String>.from(data['forOpinions'] ?? []),
+                        againstOpinions:
+                            List<String>.from(data['againstOpinions'] ?? []),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-          );
-        },
-      );
-    },
-  ),
-)
-
+          )
         ],
       ),
     );

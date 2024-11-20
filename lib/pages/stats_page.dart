@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:opinio/components/debate_page_button.dart';
-import 'package:opinio/components/forOrAgainstButton.dart';
 
 class StatsPage extends StatefulWidget {
   final String imagePath;
@@ -151,7 +150,7 @@ class _StatsPageState extends State<StatsPage> {
                           value: forPercentage,
                           color: Color.fromRGBO(68, 161, 160, 1),
                           // title: '${forPercentage.toStringAsFixed(1)}%',
-                          title: forPercentage==0.1?"":"For",
+                          title: forPercentage == 0.1 ? "" : "For",
                           titleStyle:
                               TextStyle(fontSize: 12, color: Colors.white),
                         ),

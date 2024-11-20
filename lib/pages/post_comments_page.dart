@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:opinio/components/my_text_field.dart';
-import 'package:opinio/pages/home_page.dart';
 import 'package:opinio/services/firestore.dart';
 
 class PostCommentsPage extends StatefulWidget {
@@ -48,9 +47,7 @@ class _PostCommentsPageState extends State<PostCommentsPage> {
       ),
       body: Column(
         children: [
-          Container(
-            child: Text(currentUser.email!),
-          ),
+          Text(currentUser.email!),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
