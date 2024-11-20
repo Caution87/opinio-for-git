@@ -26,6 +26,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Load environment variables (e.g., API key)
+  //hey
   await Env.load();
 
   runApp(
