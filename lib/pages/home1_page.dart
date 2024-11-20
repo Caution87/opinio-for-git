@@ -53,7 +53,7 @@ class _Home1PageState extends State<Home1Page> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -61,7 +61,7 @@ class _Home1PageState extends State<Home1Page> {
           );
         },
         child: Icon(Icons.add),
-      ),
+      ),*/
       drawer: Drawer(
         backgroundColor: Theme.of(context).colorScheme.surface,
         child: ListView(
@@ -157,24 +157,24 @@ class _Home1PageState extends State<Home1Page> {
             Divider(
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
-            /*ListTile(
+            ListTile(
               leading: Icon(
                 Icons.edit,
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
               title: Text(
-                ' Change Profile ',
+                ' Settings ',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.inversePrimary,
                 ),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/change_profile_page');
+                Navigator.pushNamed(context, '/settings_page');
               },
             ),
             Divider(
               color: Theme.of(context).colorScheme.inversePrimary,
-            ),*/
+            ),
           ],
         ),
       ),

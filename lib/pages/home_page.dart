@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:opinio/pages/home1_page.dart';
+import 'package:opinio/pages/post_debate_page.dart';
 import 'package:opinio/pages/search_page.dart';
 import 'package:opinio/pages/settings_page.dart';
 
@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   List<List<String>> debateTiles = [
     [
       "Global Warming is the major problem to face this century.",
@@ -35,8 +34,8 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> pages = [
     Home1Page(),
+    PostDebatePage(),
     SearchPage(),
-    SettingsPage(),
   ];
 
   @override
@@ -45,14 +44,16 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: index,
           onTap: navigateBottomBar,
-          backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-          selectedItemColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
-          unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
-          items: [
+          backgroundColor:
+              Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+          selectedItemColor:
+              Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+          unselectedItemColor:
+              Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+          items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'HOME'),
+            BottomNavigationBarItem(icon: Icon(Icons.add), label: 'NEW'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'SEARCH'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: 'SETTINGS'),
           ]),
       body: pages[index],
     );

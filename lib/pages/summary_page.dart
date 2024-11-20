@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:opinio/components/debate_page_button.dart';
-import 'package:opinio/components/forOrAgainstButton.dart';
 import 'package:opinio/components/message_widget.dart';
 import 'package:opinio/pages/env_loader.dart';
 
@@ -31,7 +29,7 @@ class Summarypage extends StatefulWidget {
 class _SummarypageState extends State<Summarypage> {
   var _isSelectedFor = false;
   var _isSelectedAgainst = false;
-  
+
   bool isLiked = false;
   late final GenerativeModel _model;
   late final ChatSession _chatSession;
@@ -41,7 +39,7 @@ class _SummarypageState extends State<Summarypage> {
   final ScrollController _scrollController = ScrollController();
 
   @override
- void initState() {
+  void initState() {
     super.initState();
     _model = GenerativeModel(
       model: 'gemini-pro',
@@ -49,7 +47,6 @@ class _SummarypageState extends State<Summarypage> {
     );
     _chatSession = _model.startChat();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -92,14 +89,13 @@ class _SummarypageState extends State<Summarypage> {
             // Statement
             // Text(widget.statement),
             // SizedBox(height: 10),
-            Container(
-                child: Text(
+            Text(
               widget.title,
               style: TextStyle(
                   color: Theme.of(context).colorScheme.inversePrimary,
                   fontSize: 16),
               textAlign: TextAlign.center,
-            )),
+            ),
 
             SizedBox(height: 10),
             //Opinion summary stats
