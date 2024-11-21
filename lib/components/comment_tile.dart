@@ -43,6 +43,8 @@ class _CommentTileState extends State<CommentTile> {
       return Color.fromRGBO(68, 161, 160, 1);
     } else if (widget.opinion == 1) {
       return Color.fromRGBO(212, 77, 92, 1);
+    } else {
+      return Theme.of(context).colorScheme.primary;
     }
   }
 
@@ -57,59 +59,60 @@ class _CommentTileState extends State<CommentTile> {
           //     : Color.fromRGBO(212,77,92,1),
           color: colorComment(),
           borderRadius: BorderRadius.circular(8),
-          boxShadow: [
+          /*boxShadow: [
             BoxShadow(
-              color: widget.opinion == 0
+              /*color: widget.opinion == 0
                   ? Color.fromRGBO(68, 161, 160, 1)
-                  : Color.fromRGBO(212, 77, 92, 1),
+                  : Color.fromRGBO(212, 77, 92, 1),*/
               spreadRadius: 2,
               blurRadius: 0.5,
               offset: Offset(0, 3), // changes position of shadow
             ),
-          ],
+          ],*/
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-         child:Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between comment and like button
-  children: [
-    // Text Column
-    Expanded( // Allows text to take up remaining space
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the left
-        children: [
-          // The comment
-          Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.comment,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-          // The timestamp
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.timestamp,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-    // Like Button
-    LikeButton(
-      size: 24,
-    ),
-  ],
-)
-
-        ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .spaceBetween, // Space between comment and like button
+              children: [
+                // Text Column
+                Expanded(
+                  // Allows text to take up remaining space
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start, // Aligns text to the left
+                    children: [
+                      // The comment
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.comment,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      // The timestamp
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.timestamp,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Like Button
+                LikeButton(
+                  size: 24,
+                ),
+              ],
+            )),
       ),
     );
   }

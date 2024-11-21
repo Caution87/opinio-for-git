@@ -62,6 +62,7 @@ class _PostCommentsPageState extends State<PostCommentsPage> {
         'UserEmail': currentUser.email,
         'content': commentController.text,
         'timestamp': Timestamp.now(),
+        'opinion': checkComment(),
       });
       Navigator.pop(context);
     }
@@ -139,4 +140,14 @@ class _PostCommentsPageState extends State<PostCommentsPage> {
       ),
     );
   }
+}
+
+//0 is FOR 1 is AGAINST -1 is NEUTRAL
+checkComment() {
+  if (_isSelectedFor)
+    return 0;
+  else if (_isSelectedAgainst)
+    return 1;
+  else
+    return -1;
 }

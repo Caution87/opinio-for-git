@@ -159,7 +159,7 @@ class _Home1PageState extends State<Home1Page> {
             ),
             ListTile(
               leading: Icon(
-                Icons.edit,
+                Icons.settings,
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
               title: Text(

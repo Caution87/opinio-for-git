@@ -315,6 +315,7 @@ class _DebatePageState extends State<DebatePage> {
                     final comment = comments[index];
                     String content = comment['content'];
                     Timestamp timestamp = comment['timestamp'];
+                    int col = comment['opinion'];
                     // return ListTile(
                     //   title: Text(content),
                     //   subtitle: Text(DateFormat('MMM dd, yyyy')
@@ -324,7 +325,7 @@ class _DebatePageState extends State<DebatePage> {
                       timestamp: DateFormat('MMM dd, yyyy')
                           .format(timestamp.toDate())
                           .toString(),
-                      opinion: 0,
+                      opinion: col,
                       comment: content,
                     );
                   },
