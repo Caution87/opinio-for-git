@@ -3,9 +3,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:opinio/Models/article_model.dart';
+import 'package:opinio/Models/slider_model.dart';
 import 'package:opinio/components/debate_tile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:opinio/components/mycarousel.dart';
+import 'package:opinio/new_services/news.dart';
+import 'package:opinio/new_services/slider_data.dart';
 import 'package:opinio/pages/debate_page.dart';
 import 'package:opinio/pages/post_debate_page.dart';
 import 'package:opinio/pages/practice_page_comments.dart';
@@ -24,7 +28,28 @@ class _Home1PageState extends State<Home1Page> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   void signUserOut() async {
     await FirebaseAuth.instance.signOut();
-    // Navigate to login screen or show a message
+    List<sliderModel> sliders = [];
+    List<ArticleModel> articles = [];
+    void initState() {
+      //getSlider();
+      //getNews();
+      super.initState();
+    }
+
+    getNews() async {
+      News newsclass = News();
+      await newsclass.getNews();
+      articles = newsclass.news;
+      setState(() {});
+    }
+
+    getSlider() async {
+      //Slider slider = Sliders();
+      //await slider.getSlider();
+      //sliders = slider.sliders;
+      setState(() {});
+      // Navigate to login screen or show a message
+    }
   }
 
   @override

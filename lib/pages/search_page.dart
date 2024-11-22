@@ -20,7 +20,10 @@ class _SearchPageState extends State<SearchPage> {
           "O P I N I O",
           style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
         ),
-        leading: null,
+        leading: Icon(
+          Icons.arrow_back,
+          color: Colors.black,
+        ),
         centerTitle: true,
         //backgroundColor: Colors.teal,
       ),

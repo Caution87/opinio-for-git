@@ -41,7 +41,10 @@ class _PostDebatePageState extends State<PostDebatePage> {
       appBar: AppBar(
         title: Text("Post Your Debate"),
         centerTitle: true,
-        leading: null,
+        leading: Icon(
+          Icons.arrow_back,
+          color: Colors.black,
+        ),
       ),
       body: Column(
         children: [
