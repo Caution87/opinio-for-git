@@ -27,8 +27,8 @@ class Summarypage extends StatefulWidget {
 }
 
 class _SummarypageState extends State<Summarypage> {
-  var _isSelectedFor = false;
-  var _isSelectedAgainst = false;
+  //var _isSelectedFor = false;
+  //var _isSelectedAgainst = false;
 
   bool isLiked = false;
   late final GenerativeModel _model;
@@ -55,7 +55,11 @@ class _SummarypageState extends State<Summarypage> {
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         title: Text(
           "O P I N I O",
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
         ),
         centerTitle: true,
         // backgroundColor: Color.fromRGBO(32, 32, 32, 1),
@@ -77,24 +81,37 @@ class _SummarypageState extends State<Summarypage> {
             //Image
             Container(
               height: 230,
-              width: 430,
+              width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(widget.imagePath),
                   fit: BoxFit.fill,
                 ),
+                borderRadius:
+                    BorderRadius.circular(20), // Added rounded corners
+                boxShadow: [
+                  // Added shadow for elevation effect
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 5),
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 10),
             // Statement
             // Text(widget.statement),
             // SizedBox(height: 10),
-            Text(
-              widget.title,
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                  fontSize: 16),
-              textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                widget.title,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
             ),
 
             SizedBox(height: 10),
@@ -145,39 +162,78 @@ class _SummarypageState extends State<Summarypage> {
             //chats and all
             Expanded(
                 child: ListView.builder(
-              controller: _scrollController,
-
-              shrinkWrap: true,
-              physics:
-                  NeverScrollableScrollPhysics(), // Prevents nested scrolling issues
-              itemCount: _chatSession.history.length,
-              itemBuilder: (context, index) {
-                final Content content = _chatSession.history.toList()[index];
-                final text = content.parts
-                    .whereType<TextPart>()
-                    .map<String>((e) => e.text)
-                    .join('');
-                return MessageWidget(
-                  text: text,
-                  isFromUser: content.role == 'user',
-                );
-              },
-            )),
-            Row(
-              children: [
-                Expanded(
-                    child: TextField(
-                  autofocus: true,
-                  focusNode: _textFieldFocus,
-                  decoration: textFieldDecoration(),
-                  controller: _textController,
-                  onSubmitted: _sendChatMessage,
-                )),
-                SizedBox(
-                  height: 15,
-                ),
-              ],
-            )
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    physics:
+                        NeverScrollableScrollPhysics(), // Prevents nested scrolling issues
+                    itemCount: _chatSession.history.length,
+                    itemBuilder: (context, index) {
+                      final Content content =
+                          _chatSession.history.toList()[index];
+                      final text = content.parts
+                          .whereType<TextPart>()
+                          .map<String>((e) => e.text)
+                          .join('');
+                      return Padding(
+                        // Added padding for chat messages
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MessageWidget(
+                              text: text,
+                              isFromUser: content.role == 'user',
+                            ),
+                            SizedBox(
+                                height: 10), // Added space between messages
+                            if (content.role == 'gemini')
+                              Container(
+                                  // Adding container for colored Gemini reply
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(255, 114, 160,
+                                        196), // Background color for Gemini reply
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    text,
+                                    style: TextStyle(
+                                      color: const Color.fromARGB(255, 110, 223,
+                                          92), // Text color for Gemini reply
+                                    ),
+                                  ))
+                          ],
+                        ),
+                      );
+                    })),
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                    // Added padding for input row
+                    child: Row(
+                  children: [
+                    Expanded(
+                        child: TextField(
+                      autofocus: true,
+                      focusNode: _textFieldFocus,
+                      decoration: textFieldDecoration(),
+                      controller: _textController,
+                      onSubmitted: _sendChatMessage,
+                    )),
+                    SizedBox(
+                      height: 15,
+                      width: 8,
+                    ),
+                    ElevatedButton(
+                      onPressed: _loading
+                          ? null
+                          : () => _sendChatMessage(_textController.text),
+                      child:
+                          _loading ? CircularProgressIndicator() : Text('Send'),
+                    ),
+                  ],
+                )))
           ]),
     );
   }

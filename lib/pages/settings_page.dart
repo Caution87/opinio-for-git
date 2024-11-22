@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:opinio/components/settings_tile.dart';
 import 'package:opinio/components/settings_tile_with_cupertino.dart';
 import 'package:opinio/pages/home_page.dart';
+import 'package:opinio/pages/login_page.dart';
 import 'package:opinio/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,13 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   void signUserOut() async {
     await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => LoginPage(
+                onTap: () {},
+              )), // Navigate to login page
+    );
     // Navigate to login screen or show a message
   }
 
@@ -48,7 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 property: 'Change Password',
                 icon: Icon(Icons.password),
                 onTap: () {}),
-            SettingsTileWithCupertino(
+            /*SettingsTileWithCupertino(
               property: 'Light Mode',
               onTap: () {},
               cupertinoSwitch: CupertinoSwitch(
@@ -63,9 +71,11 @@ class _SettingsPageState extends State<SettingsPage> {
               property: 'Notifications',
               onTap: () {},
               icon: Icon(Icons.notification_important),
-            ),
+            ),*/
             SettingsTile(
-                property: 'About', icon: Icon(Icons.info), onTap: () {}),
+                property: 'Help us improve',
+                icon: Icon(Icons.info),
+                onTap: () {}),
           ],
         ),
       ),
