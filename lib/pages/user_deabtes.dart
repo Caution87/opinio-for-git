@@ -6,34 +6,18 @@ import 'package:opinio/components/debate_tile.dart';
 import 'package:opinio/pages/debate_page.dart';
 import 'package:opinio/services/firestore.dart';
 
-class LikedDebatesPage extends StatefulWidget {
-  final String title;
-  final String imagePath;
-  LikedDebatesPage({super.key, required this.title, required this.imagePath});
+class UserDeabtes extends StatefulWidget {
+  const UserDeabtes({super.key});
 
   @override
-  State<LikedDebatesPage> createState() => _LikedDebatesPageState();
+  State<UserDeabtes> createState() => _UserDeabtesState();
 }
 
-class _LikedDebatesPageState extends State<LikedDebatesPage> {
-  List<List<String>> likedDebates = [
-    [
-      "Global Warming is the major problem to face this century.",
-      'lib/Opinio_Images/Global_Warming.jpg'
-    ],
-    ["Anti-litter laws need to be stricter", 'lib/Opinio_Images/litter.jpg'],
-    ["Lewis Hamilton should retire.", 'lib/Opinio_Images/lewis_hamilton.jpg'],
-    [
-      "CGPA is a determining factor for placements.",
-      'lib/Opinio_Images/CGPA.jpg'
-    ],
-  ];
-
-
-    final FirestoreService firestoreService = FirestoreService();
+class _UserDeabtesState extends State<UserDeabtes> {
+  final FirestoreService firestoreService = FirestoreService();
   //user
   final currentUser = FirebaseAuth.instance.currentUser!;
-  
+
   String? valueChoose; // Use String? for null safety
   List<String> listItem = ["Most Liked", "Recent"];
   @override
@@ -44,13 +28,13 @@ class _LikedDebatesPageState extends State<LikedDebatesPage> {
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         title: Text(
           "O P I N I O",
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-          overflow: TextOverflow.visible,
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        // backgroundColor: Color.fromRGBO(32, 32, 32, 1),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
-      body:Column(
+      body: Column(
         children: [
           DropdownButton<String>(
             hint: Text("Sort:"),
@@ -69,7 +53,7 @@ class _LikedDebatesPageState extends State<LikedDebatesPage> {
           ),
           Expanded(
             child: StreamBuilder(
-              stream: firestoreService.getLikedDebates(),
+              stream: firestoreService.searchUserDebates(),
               builder: (context, snapshot) {
                 // Show loading circle while waiting
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -117,6 +101,9 @@ class _LikedDebatesPageState extends State<LikedDebatesPage> {
                       //       DateFormat('MMM dd, yyyy').format(timestamp.toDate())),
                       // ),
                       child: DebateTile(
+                        timestamp: DateFormat('MMM dd, yyyy')
+                            .format(timestamp.toDate())
+                            .toString(),
                         title: title,
                         likes: List<String>.from(debate['likes'] ?? []),
                         debateId: debate.id,
@@ -125,10 +112,7 @@ class _LikedDebatesPageState extends State<LikedDebatesPage> {
                         againstOpinions:
                             List<String>.from(debate['againstOpinions'] ?? []),
                         imageUrl: debate['imageUrl'] ??
-                            '',
-                            timestamp: DateFormat('MMM dd, yyyy')
-                          .format(timestamp.toDate())
-                          .toString(), // Dynamically fetch imageUrl
+                            '', // Dynamically fetch imageUrl
                       ),
                     );
                   },

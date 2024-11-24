@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:opinio/components/debate_tile.dart';
 import 'package:opinio/pages/debate_page.dart'; // Don't forget this import!
 
@@ -82,7 +83,7 @@ class _SearchPageState extends State<SearchPage> {
                           MaterialPageRoute(
                             builder: (context) => DebatePage(
                               debateId: debate.id,
-                              imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                              imageUrl: debate['imageUrl'] ?? '',
                               title: title,
                               forOpinions:
                                   List<String>.from(data['forOpinions'] ?? []),
@@ -93,14 +94,16 @@ class _SearchPageState extends State<SearchPage> {
                         );
                       },
                       child: DebateTile(
+                        timestamp: DateFormat('MMM dd, yyyy')
+                          .format(timestamp.toDate())
+                          .toString(),
                         title: title,
-                        imagePath: "lib/Opinio_Images/Global_Warming.jpg",
                         likes: List<String>.from(data['likes'] ?? []),
                         debateId: debate.id,
                         forOpinions:
                             List<String>.from(data['forOpinions'] ?? []),
                         againstOpinions:
-                            List<String>.from(data['againstOpinions'] ?? []),
+                            List<String>.from(data['againstOpinions'] ?? []), imageUrl: debate['imageUrl'] ?? '',
                       ),
                     );
                   },

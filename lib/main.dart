@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
         // '/summary_page' : (context) => Summarypage(imagePath: '', title: '', name: '',),
       },
       theme: Provider.of<ThemeProvider>(context).themeData,
+      
     );
   }
 }

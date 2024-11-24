@@ -97,38 +97,39 @@ class _PracticePageCommentsState extends State<PracticePageComments> {
               )
             ],
           ),
-          Expanded(
-            child: StreamBuilder(
-              stream: firestoreService
-                  .getCommentsStream(widget.debateId), // Use widget.debateId
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+          // Expanded(
+          //   child: StreamBuilder(
+          //     stream: firestoreService
+          //         .getCommentsStream(widget.debateId,null), // Use widget.debateId
+          //     builder: (context, snapshot) {
+          //       if (snapshot.connectionState == ConnectionState.waiting) {
+          //         return const Center(child: CircularProgressIndicator());
+          //       }
 
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text("No comments yet."));
-                }
+          //       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          //         return const Center(child: Text("No comments yet."));
+          //       }
 
-                final comments = snapshot.data!.docs;
+          //       final comments = snapshot.data!.docs;
 
-                return ListView.builder(
-                  itemCount: comments.length,
-                  itemBuilder: (context, index) {
-                    final comment = comments[index];
-                    String content = comment['content'];
-                    Timestamp timestamp = comment['timestamp'];
+          //       return ListView.builder(
+          //         itemCount: comments.length,
+          //         itemBuilder: (context, index) {
+          //           final comment = comments[index];
+          //           String content = comment['content'];
+          //           Timestamp timestamp = comment['timestamp'];
 
-                    return ListTile(
-                      title: Text(content),
-                      subtitle: Text(DateFormat('MMM dd, yyyy')
-                          .format(timestamp.toDate())),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
+          //           return ListTile(
+          //             title: Text(content),
+          //             subtitle: Text(DateFormat('MMM dd, yyyy')
+          //                 .format(timestamp.toDate())),
+          //           );
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
+          
         ],
       ),
     );

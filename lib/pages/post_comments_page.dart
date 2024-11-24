@@ -63,6 +63,8 @@ class _PostCommentsPageState extends State<PostCommentsPage> {
         'content': commentController.text,
         'timestamp': Timestamp.now(),
         'opinion': checkComment(),
+        'likes': [],
+        'likeCount': 0
       });
       Navigator.pop(context);
     }

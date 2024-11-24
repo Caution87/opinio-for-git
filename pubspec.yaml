@@ -48,6 +48,8 @@ dependencies:
   intl: 
   google_generative_ai: ^0.4.6
   flutter_markdown: ^0.6.15
+  firebase_storage: ^12.3.6
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

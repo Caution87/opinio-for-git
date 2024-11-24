@@ -15,17 +15,16 @@ import 'package:opinio/services/firestore.dart';
 
 class DebatePage extends StatefulWidget {
   final String debateId;
-  final String imagePath;
+  final String imageUrl;
   final String title;
   final List<String> forOpinions;
   final List<String> againstOpinions;
   const DebatePage({
     super.key,
     required this.debateId,
-    required this.imagePath,
     required this.title,
     required this.forOpinions,
-    required this.againstOpinions,
+    required this.againstOpinions, required this.imageUrl,
   });
 
   @override
@@ -41,7 +40,8 @@ class _DebatePageState extends State<DebatePage> {
   bool _isSelectedFor = false;
   bool _isSelectedAgainst = false;
   bool isLiked = false;
-
+  String? valueChoose; // Use String? for null safety
+  List<String> listItem = ["Most Liked", "Recent"];
   @override
   void initState() {
     super.initState();
@@ -155,15 +155,28 @@ class _DebatePageState extends State<DebatePage> {
         children: [
           //Image
           Container(
-            height: 230,
-            width: 430,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("lib/Opinio_Images/Global_Warming.jpg"),
-                fit: BoxFit.fill,
+              height: 230,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                          image: widget.imageUrl.isNotEmpty
+                              ? NetworkImage(widget.imageUrl) // Load from Firebase
+                              : AssetImage("lib/Opinio_Images/placeholder.png")
+                                  as ImageProvider, // Default placeholder
+                          fit: BoxFit.cover,
+                        ),
+                borderRadius:
+                    BorderRadius.circular(20), // Added rounded corners
+                boxShadow: [
+                  // Added shadow for elevation effect
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 5),
+                  ),
+                ],
               ),
             ),
-          ),
 
           SizedBox(height: 10),
           // Statement
@@ -187,19 +200,17 @@ class _DebatePageState extends State<DebatePage> {
               DebatePageButton(
                 number: 0,
                 shouldColor: true,
-                imagePath: "lib/Opinio_Images/Global_Warming.jpg",
                 name: 'OPINIONS',
                 debateId: widget.debateId,
                 title: widget.title,
                 forOpinions: widget.forOpinions,
-                againstOpinions: widget.againstOpinions,
+                againstOpinions: widget.againstOpinions, imageUrl: widget.imageUrl,
               ),
               //Space
               const SizedBox(
                 width: 5,
               ),
               DebatePageButton(
-                imagePath: "lib/Opinio_Images/Global_Warming.jpg",
                 title: widget.title,
                 number: 1,
                 shouldColor: false,
@@ -207,12 +218,12 @@ class _DebatePageState extends State<DebatePage> {
                 debateId: widget.debateId,
                 forOpinions: widget.forOpinions,
                 againstOpinions: widget.againstOpinions,
+                imageUrl: widget.imageUrl,
               ),
               const SizedBox(
                 width: 5,
               ),
               DebatePageButton(
-                imagePath: "lib/Opinio_Images/Global_Warming.jpg",
                 number: 2,
                 shouldColor: false,
                 name: 'STATISTICS',
@@ -220,6 +231,7 @@ class _DebatePageState extends State<DebatePage> {
                 title: widget.title,
                 forOpinions: widget.forOpinions,
                 againstOpinions: widget.againstOpinions,
+                imageUrl: widget.imageUrl,
               ),
             ],
           ),
@@ -268,25 +280,20 @@ class _DebatePageState extends State<DebatePage> {
           ),
 
           //sort
-          Row(
-            children: [
-              const SizedBox(
-                width: 13,
-              ),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.sort,
-                    color: Colors.red,
-                    size: 30,
-                  )),
-              GestureDetector(
-                  onTap: () {},
-                  child: const Text(
-                    'Sort',
-                    style: TextStyle(color: Colors.red, fontSize: 22),
-                  ))
-            ],
+          DropdownButton<String>(
+            hint: Text("Sort:"),
+            value: valueChoose, // Can be null initially
+            onChanged: (newValue) {
+              setState(() {
+                valueChoose = newValue; // Update selected value
+              });
+            },
+            items: listItem.map((valueItem) {
+              return DropdownMenuItem<String>(
+                value: valueItem, // Value must match DropdownButton<String>
+                child: Text(valueItem),
+              );
+            }).toList(),
           ),
           const Divider(
             color: Colors.red,
@@ -297,7 +304,7 @@ class _DebatePageState extends State<DebatePage> {
           Expanded(
             child: StreamBuilder(
               stream: firestoreService
-                  .getCommentsStream(widget.debateId), // Use widget.debateId
+                  .getCommentsStream(widget.debateId,valueChoose), // Use widget.debateId
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -316,6 +323,7 @@ class _DebatePageState extends State<DebatePage> {
                     String content = comment['content'];
                     Timestamp timestamp = comment['timestamp'];
                     int col = comment['opinion'];
+
                     // return ListTile(
                     //   title: Text(content),
                     //   subtitle: Text(DateFormat('MMM dd, yyyy')
@@ -326,13 +334,15 @@ class _DebatePageState extends State<DebatePage> {
                           .format(timestamp.toDate())
                           .toString(),
                       opinion: col,
-                      comment: content,
+                      comment: content, likes: List<String>.from(comment['likes'] ?? []), commentId: comment.id, debateId: widget.debateId,
                     );
                   },
                 );
               },
             ),
           ),
+    
+
         ],
       ),
     );
