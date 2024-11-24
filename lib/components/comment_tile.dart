@@ -1,4 +1,5 @@
 // ignore_for_file: unused_import, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +10,16 @@ class CommentTile extends StatefulWidget {
   final String comment;
   final String timestamp; //timestamp in date
   final int opinion; //0 is for 1 is against
-  // final List<String> likes;
+  final String commentId;
+  final String debateId;
+  final List<String> likes;
   CommentTile({
     super.key,
     required this.comment,
     required this.opinion,
     required this.timestamp,
+    required this.likes,
+    required this.commentId, required this.debateId,
     // required this.likes
   });
 
@@ -29,13 +34,33 @@ class _CommentTileState extends State<CommentTile> {
   @override
   void initState() {
     super.initState();
+    isLiked = widget.likes.contains(currentUser.email);
   }
 
-  //unlike and like
-  void toggleLike() {
+  Future<bool> toggleLike(bool isCurrentlyLiked) async {
     setState(() {
-      isLiked = !isLiked;
+      isLiked = !isCurrentlyLiked;
     });
+
+    DocumentReference debateRef = FirebaseFirestore.instance
+      .collection("debates")
+          .doc(widget.debateId)
+          .collection("comments")
+          .doc(widget.commentId);
+
+    if (isLiked) {
+      await debateRef.update({
+        'likes': FieldValue.arrayUnion([currentUser.email]),
+        'likeCount': FieldValue.increment(1),
+      });
+    } else {
+      await debateRef.update({
+        'likes': FieldValue.arrayRemove([currentUser.email]),
+        'likeCount': FieldValue.increment(-1),
+      });
+    }
+
+    return isLiked; // Return the updated isLiked state
   }
 
   Color? colorComment() {
@@ -108,8 +133,29 @@ class _CommentTileState extends State<CommentTile> {
                   ),
                 ),
                 // Like Button
-                LikeButton(
-                  size: 24,
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 70,
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: LikeButton(
+                          size: 24,
+                          likeCount: widget.likes.length,
+                          isLiked: isLiked, // Set the initial state
+                          onTap: (isLiked) async {
+                            return toggleLike(
+                                isLiked); // Trigger animation by returning updated state
+                          },
+                          likeBuilder: (isLiked) {
+                            return Icon(
+                              Icons.favorite,
+                              color: isLiked ? Colors.pink : Colors.grey,
+                            );
+                          },
+                        ))
+                  ],
                 ),
               ],
             )),

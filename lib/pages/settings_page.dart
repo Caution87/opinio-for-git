@@ -56,7 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 property: 'Change Password',
                 icon: Icon(Icons.password),
                 onTap: () {}),
-            /*SettingsTileWithCupertino(
+            SettingsTileWithCupertino(
               property: 'Light Mode',
               onTap: () {},
               cupertinoSwitch: CupertinoSwitch(
@@ -71,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
               property: 'Notifications',
               onTap: () {},
               icon: Icon(Icons.notification_important),
-            ),*/
+            ),
             SettingsTile(
                 property: 'Help us improve',
                 icon: Icon(Icons.info),

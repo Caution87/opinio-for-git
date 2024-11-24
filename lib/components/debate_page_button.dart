@@ -6,7 +6,7 @@ import 'package:opinio/pages/stats_page.dart';
 import 'package:opinio/pages/summary_page.dart';
 
 class DebatePageButton extends StatelessWidget {
-  final String imagePath;
+  final String imageUrl;
   final String name;
   final String debateId;
   final String title;
@@ -18,12 +18,11 @@ class DebatePageButton extends StatelessWidget {
     super.key,
     required this.shouldColor,
     required this.number,
-    required this.imagePath,
     required this.name,
     required this.debateId,
     required this.title,
     required this.forOpinions,
-    required this.againstOpinions,
+    required this.againstOpinions, required this.imageUrl,
   });
 
   @override
@@ -37,11 +36,11 @@ class DebatePageButton extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => DebatePage(
-                      imagePath: imagePath,
+                      
                       debateId: debateId,
                       title: title,
                       forOpinions: forOpinions,
-                      againstOpinions: againstOpinions,
+                      againstOpinions: againstOpinions, imageUrl: imageUrl,
                     ),
                   ));
               break;
@@ -50,12 +49,13 @@ class DebatePageButton extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Summarypage(
-                            imagePath: imagePath,
+                            imageUrl: imageUrl,
                             name: 'SUMMARY',
                             debateId: debateId,
                             title: title,
                             forOpinions: forOpinions,
                             againstOpinions:againstOpinions,
+                            
                           )));
               break;
             case 2:
@@ -63,12 +63,11 @@ class DebatePageButton extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => StatsPage(
-                            imagePath: imagePath,
                             name: 'STATISTICS',
                             debateId: debateId,
                             title: title,
                             forOpinions: forOpinions,
-                            againstOpinions: againstOpinions,
+                            againstOpinions: againstOpinions, imageUrl: imageUrl,
                           )));
               break;
             default:

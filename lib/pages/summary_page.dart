@@ -7,7 +7,7 @@ import 'package:opinio/components/message_widget.dart';
 import 'package:opinio/pages/env_loader.dart';
 
 class Summarypage extends StatefulWidget {
-  final String imagePath;
+  final String imageUrl;
   final String title;
   final String name;
   final String debateId;
@@ -15,12 +15,11 @@ class Summarypage extends StatefulWidget {
   final List<String> againstOpinions;
   const Summarypage(
       {super.key,
-      required this.imagePath,
       required this.title,
       required this.name,
       required this.debateId,
       required this.forOpinions,
-      required this.againstOpinions});
+      required this.againstOpinions, required this.imageUrl});
 
   @override
   State<Summarypage> createState() => _SummarypageState();
@@ -84,9 +83,12 @@ class _SummarypageState extends State<Summarypage> {
               width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(widget.imagePath),
-                  fit: BoxFit.fill,
-                ),
+                          image: widget.imageUrl.isNotEmpty
+                              ? NetworkImage(widget.imageUrl) // Load from Firebase
+                              : AssetImage("lib/Opinio_Images/placeholder.png")
+                                  as ImageProvider, // Default placeholder
+                          fit: BoxFit.cover,
+                        ),
                 borderRadius:
                     BorderRadius.circular(20), // Added rounded corners
                 boxShadow: [
@@ -120,7 +122,7 @@ class _SummarypageState extends State<Summarypage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 DebatePageButton(
-                  imagePath: widget.imagePath,
+                  imageUrl: widget.imageUrl,
                   shouldColor: false,
                   number: 0,
                   name: 'OPINIONS',
@@ -134,7 +136,7 @@ class _SummarypageState extends State<Summarypage> {
                   width: 5,
                 ),
                 DebatePageButton(
-                  imagePath: widget.imagePath,
+                  imageUrl: widget.imageUrl,
                   shouldColor: true,
                   number: 1,
                   name: 'SUMMARY',
@@ -147,7 +149,7 @@ class _SummarypageState extends State<Summarypage> {
                   width: 5,
                 ),
                 DebatePageButton(
-                  imagePath: widget.imagePath,
+                  imageUrl: widget.imageUrl,
                   shouldColor: false,
                   number: 2,
                   name: 'STATISTICS',

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:opinio/components/debate_page_button.dart';
 
 class StatsPage extends StatefulWidget {
-  final String imagePath;
+  final String imageUrl;
   final String title;
   final String name;
   final String debateId;
@@ -11,12 +11,11 @@ class StatsPage extends StatefulWidget {
   final List<String> againstOpinions;
   const StatsPage({
     super.key,
-    required this.imagePath,
     required this.title,
     required this.name,
     required this.debateId,
     required this.forOpinions,
-    required this.againstOpinions,
+    required this.againstOpinions, required this.imageUrl,
   });
 
   @override
@@ -67,12 +66,25 @@ class _StatsPageState extends State<StatsPage> {
             // Image
             Container(
               height: 230,
-              width: 430,
+              width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(widget.imagePath),
-                  fit: BoxFit.fill,
-                ),
+                          image: widget.imageUrl.isNotEmpty
+                              ? NetworkImage(widget.imageUrl) // Load from Firebase
+                              : AssetImage("lib/Opinio_Images/placeholder.png")
+                                  as ImageProvider, // Default placeholder
+                          fit: BoxFit.cover,
+                        ),
+                borderRadius:
+                    BorderRadius.circular(20), // Added rounded corners
+                boxShadow: [
+                  // Added shadow for elevation effect
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 5),
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 10),
@@ -93,18 +105,16 @@ class _StatsPageState extends State<StatsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 DebatePageButton(
-                  imagePath: widget.imagePath,
                   shouldColor: false,
                   number: 0,
                   name: 'OPINIONS',
                   debateId: widget.debateId,
                   title: widget.title,
                   forOpinions: widget.forOpinions,
-                  againstOpinions: [],
+                  againstOpinions: [], imageUrl: widget.imageUrl,
                 ),
                 const SizedBox(width: 5),
                 DebatePageButton(
-                  imagePath: widget.imagePath,
                   shouldColor: false,
                   number: 1,
                   name: 'SUMMARY',
@@ -112,10 +122,11 @@ class _StatsPageState extends State<StatsPage> {
                   title: widget.title,
                   forOpinions: widget.forOpinions,
                   againstOpinions: [],
+                  imageUrl: widget.imageUrl,
                 ),
                 const SizedBox(width: 5),
                 DebatePageButton(
-                  imagePath: widget.imagePath,
+                  imageUrl: widget.imageUrl,
                   shouldColor: true,
                   number: 2,
                   name: 'STATISTICS',

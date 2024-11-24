@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData darkMode = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.black,
-    foregroundColor: Colors.white,
+    foregroundColor: Colors.red,
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.black,
