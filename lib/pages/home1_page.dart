@@ -28,8 +28,8 @@ class _Home1PageState extends State<Home1Page> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   void signUserOut() async {
     await FirebaseAuth.instance.signOut();
-    List<sliderModel> sliders = [];
-    List<ArticleModel> articles = [];
+    List<SliderModel> sliders = [];
+    //List<ArticleModel> articles = [];
     void initState() {
       //getSlider();
       //getNews();
@@ -37,9 +37,9 @@ class _Home1PageState extends State<Home1Page> {
     }
 
     getNews() async {
-      News newsclass = News();
-      await newsclass.getNews();
-      articles = newsclass.news;
+      //News newsclass = News();
+      //await newsclass.getNews();
+      //articles = newsclass.news;
       setState(() {});
     }
 
@@ -204,7 +204,7 @@ class _Home1PageState extends State<Home1Page> {
         ),
       ),
       body: StreamBuilder(
-        stream: firestoreService.getDebatesStream(),
+        stream: firestoreService.getDebatesStream(null),
         builder: (context, snapshot) {
           // Show loading circle while waiting
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -225,6 +225,7 @@ class _Home1PageState extends State<Home1Page> {
               // Get data from each debate
               String title = debate['title'];
               Timestamp timestamp = debate['timestamp'];
+              String imageUrl = debate['imageUrl'];
               //get debate id
 
               // Return as a ListTile with GestureDetector
@@ -236,7 +237,7 @@ class _Home1PageState extends State<Home1Page> {
                     MaterialPageRoute(
                       builder: (context) => DebatePage(
                         debateId: debate.id,
-                        imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                        imageUrl: debate[imageUrl],
                         title: title,
                         forOpinions:
                             List<String>.from(debate['forOpinions'] ?? []),
@@ -253,12 +254,13 @@ class _Home1PageState extends State<Home1Page> {
                 // ),
                 child: DebateTile(
                   title: title,
-                  imagePath: "lib/Opinio_Images/Global_Warming.jpg",
+                  imageUrl: debate['imageUrl'],
                   likes: List<String>.from(debate['likes'] ?? []),
                   debateId: debate.id,
                   forOpinions: List<String>.from(debate['forOpinions'] ?? []),
                   againstOpinions:
                       List<String>.from(debate['againstOpinions'] ?? []),
+                  timestamp: '',
                 ),
               );
             },
