@@ -29,26 +29,27 @@ class _Home1PageState extends State<Home1Page> {
   void signUserOut() async {
     await FirebaseAuth.instance.signOut();
     List<SliderModel> sliders = [];
-    //List<ArticleModel> articles = [];
-    void initState() {
-      //getSlider();
-      //getNews();
-      super.initState();
-    }
+    List<ArticleModel> articles = [];
 
     getNews() async {
-      //News newsclass = News();
-      //await newsclass.getNews();
-      //articles = newsclass.news;
+      News newsclass = News();
+      await newsclass.getNews();
+      articles = newsclass.news;
       setState(() {});
     }
 
-    getSlider() async {
-      //Slider slider = Sliders();
-      //await slider.getSlider();
-      //sliders = slider.sliders;
+    getSliders() async {
+      Sliders slider = Sliders();
+      await slider.getSlider();
+      sliders = slider.sliders;
       setState(() {});
-      // Navigate to login screen or show a message
+      //Navigate to login screen or show a message
+    }
+
+    void initState() {
+      getSliders();
+      getNews();
+      super.initState();
     }
   }
 
@@ -203,69 +204,95 @@ class _Home1PageState extends State<Home1Page> {
           ],
         ),
       ),
-      body: StreamBuilder(
-        stream: firestoreService.getDebatesStream(null),
-        builder: (context, snapshot) {
-          // Show loading circle while waiting
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          // Get all debates from Firestore
-          final debates = snapshot.data!.docs;
-
-          // Return as a ListView
-          return ListView.builder(
-            itemCount: debates.length,
+      body: Column(
+        children: [
+          /*ListView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            itemCount:
+                widget.news == "Breaking" ? sliders.length : rticles.length,
             itemBuilder: (context, index) {
-              // Get each debate
-              final debate = debates[index];
-              // Get data from each debate
-              String title = debate['title'];
-              Timestamp timestamp = debate['timestamp'];
-              String imageUrl = debate['imageUrl'];
-              //get debate id
-
-              // Return as a ListTile with GestureDetector
-              return GestureDetector(
-                onTap: () {
-                  // Navigate to another page on tap
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DebatePage(
-                        debateId: debate.id,
-                        imageUrl: debate[imageUrl],
-                        title: title,
-                        forOpinions:
-                            List<String>.from(debate['forOpinions'] ?? []),
-                        againstOpinions:
-                            List<String>.from(debate['againstOpinions'] ?? []),
-                      ), // Pass data to the next page
+              print(articles.length);
+              print(sliders.length);
+              return AllNewsSection(
+                  Image: widget.news == "Breaking"
+                      ? sliders[index].urlToImage!
+                      : articles[index].urlToImage!,
+                  desc: widget.news == "Breaking"
+                      ? sliders[index].description!
+                      : articles[index].description!,
+                  title: widget.news == "Breaking"
+                      ? sliders[index].title!
+                      : articles[index].title!,
+                  url: widget.news == "Breaking"
+                      ? sliders[index].url!
+                      : articles[index].url!);
+            }),*/
+          StreamBuilder(
+            stream: firestoreService.getDebatesStream(null),
+            builder: (context, snapshot) {
+              // Show loading circle while waiting
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+          
+              // Get all debates from Firestore
+              final debates = snapshot.data!.docs;
+          
+              // Return as a ListView
+              return ListView.builder(
+                itemCount: debates.length,
+                itemBuilder: (context, index) {
+                  // Get each debate
+                  final debate = debates[index];
+                  // Get data from each debate
+                  String title = debate['title'];
+                  Timestamp timestamp = debate['timestamp'];
+                  String imageUrl = debate['imageUrl'];
+                  //get debate id
+          
+                  // Return as a ListTile with GestureDetector
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigate to another page on tap
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DebatePage(
+                            debateId: debate.id,
+                            imageUrl: debate[imageUrl],
+                            title: title,
+                            forOpinions:
+                                List<String>.from(debate['forOpinions'] ?? []),
+                            againstOpinions:
+                                List<String>.from(debate['againstOpinions'] ?? []),
+                          ), // Pass data to the next page
+                        ),
+                      );
+                    },
+                    // child: ListTile(
+                    //   title: Text(title),
+                    //   subtitle: Text(
+                    //       DateFormat('MMM dd, yyyy').format(timestamp.toDate())),
+                    // ),
+                    child: DebateTile(
+                      title: title,
+                      imageUrl: debate['imageUrl'],
+                      likes: List<String>.from(debate['likes'] ?? []),
+                      debateId: debate.id,
+                      forOpinions: List<String>.from(debate['forOpinions'] ?? []),
+                      againstOpinions:
+                          List<String>.from(debate['againstOpinions'] ?? []),
+                      timestamp: '',
                     ),
                   );
                 },
-                // child: ListTile(
-                //   title: Text(title),
-                //   subtitle: Text(
-                //       DateFormat('MMM dd, yyyy').format(timestamp.toDate())),
-                // ),
-                child: DebateTile(
-                  title: title,
-                  imageUrl: debate['imageUrl'],
-                  likes: List<String>.from(debate['likes'] ?? []),
-                  debateId: debate.id,
-                  forOpinions: List<String>.from(debate['forOpinions'] ?? []),
-                  againstOpinions:
-                      List<String>.from(debate['againstOpinions'] ?? []),
-                  timestamp: '',
-                ),
               );
             },
-          );
-        },
+          ),
+        ],
       ),
     );
   }
