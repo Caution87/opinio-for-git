@@ -85,10 +85,7 @@ class _PostDebatePageState extends State<PostDebatePage> {
       appBar: AppBar(
         title: Text("Post Your Debate"),
         centerTitle: true,
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.black,
-        ),
+        leading: null,
       ),
       body: Column(
         children: [
@@ -121,6 +118,9 @@ class _PostDebatePageState extends State<PostDebatePage> {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red)),
                   onPressed: _isUploading
                       ? null
                       : () async {

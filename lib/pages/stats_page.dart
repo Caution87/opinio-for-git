@@ -15,7 +15,8 @@ class StatsPage extends StatefulWidget {
     required this.name,
     required this.debateId,
     required this.forOpinions,
-    required this.againstOpinions, required this.imageUrl,
+    required this.againstOpinions,
+    required this.imageUrl,
   });
 
   @override
@@ -42,8 +43,7 @@ class _StatsPageState extends State<StatsPage> {
       appBar: AppBar(
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         title: Text(
-          // "O P I N I O",
-          forPercentage.toString(),
+          "O P I N I O",
           style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -69,12 +69,12 @@ class _StatsPageState extends State<StatsPage> {
               width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                          image: widget.imageUrl.isNotEmpty
-                              ? NetworkImage(widget.imageUrl) // Load from Firebase
-                              : AssetImage("lib/Opinio_Images/placeholder.png")
-                                  as ImageProvider, // Default placeholder
-                          fit: BoxFit.cover,
-                        ),
+                  image: widget.imageUrl.isNotEmpty
+                      ? NetworkImage(widget.imageUrl) // Load from Firebase
+                      : AssetImage("lib/Opinio_Images/placeholder.png")
+                          as ImageProvider, // Default placeholder
+                  fit: BoxFit.cover,
+                ),
                 borderRadius:
                     BorderRadius.circular(20), // Added rounded corners
                 boxShadow: [
@@ -111,7 +111,8 @@ class _StatsPageState extends State<StatsPage> {
                   debateId: widget.debateId,
                   title: widget.title,
                   forOpinions: widget.forOpinions,
-                  againstOpinions: [], imageUrl: widget.imageUrl,
+                  againstOpinions: [],
+                  imageUrl: widget.imageUrl,
                 ),
                 const SizedBox(width: 5),
                 DebatePageButton(

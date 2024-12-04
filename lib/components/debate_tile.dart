@@ -106,7 +106,14 @@ class _DebateTileState extends State<DebateTile> {
                   height: screenHeight * 0.165,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 6,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +166,7 @@ class _DebateTileState extends State<DebateTile> {
                         child: Text(
                           widget.timestamp,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.inversePrimary,
                             fontWeight: FontWeight.w300,
                           ),
                         ),
