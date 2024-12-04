@@ -5,13 +5,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:opinio/pages/home_page.dart';
+
 class PostDebatePage extends StatefulWidget {
   @override
-    _PostDebatePageState createState() => _PostDebatePageState();
+  _PostDebatePageState createState() => _PostDebatePageState();
 }
 
 class _PostDebatePageState extends State<PostDebatePage> {
-    final TextEditingController debateContentController = TextEditingController();
+  final TextEditingController debateContentController = TextEditingController();
   final currentUser = FirebaseAuth.instance.currentUser!;
   File? _selectedImage;
   bool _isUploading = false;
@@ -33,7 +34,7 @@ class _PostDebatePageState extends State<PostDebatePage> {
   // Upload image to Firebase Storage
   Future<String?> _uploadImage() async {
     if (_selectedImage == null) return null;
-  setState(() {
+    setState(() {
       _isUploading = true;
     });
 
@@ -61,7 +62,7 @@ class _PostDebatePageState extends State<PostDebatePage> {
   // Post Debate
   void postDebate(String imageUrl) {
     if (debateContentController.text.isNotEmpty) {
-        // Store in Firestore
+      // Store in Firestore
       FirebaseFirestore.instance.collection("debates").add({
         'UserEmail': currentUser.email,
         'title': debateContentController.text,
@@ -69,10 +70,10 @@ class _PostDebatePageState extends State<PostDebatePage> {
         'likes': [],
         'forOpinions': [],
         'againstOpinions': [],
-         'likeCount': 0,
+        'likeCount': 0,
         'imageUrl': imageUrl, // Include imageUrl
       });
-          Navigator.push(
+      Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomePage()));
     }
     debateContentController.clear();
@@ -84,11 +85,15 @@ class _PostDebatePageState extends State<PostDebatePage> {
       appBar: AppBar(
         title: Text("Post Your Debate"),
         centerTitle: true,
-         ),
+        leading: Icon(
+          Icons.arrow_back,
+          color: Colors.black,
+        ),
+      ),
       body: Column(
         children: [
           Container(
-               padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Text("Posting as: ${currentUser.email!}"),
           ),
           Padding(

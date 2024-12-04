@@ -26,39 +26,37 @@ class _Home1PageState extends State<Home1Page> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   void signUserOut() async {
     await FirebaseAuth.instance.signOut();
-    // Navigate to login screen or show a message
-  }
 
-  String? valueChoose; // Use String? for null safety
-  List<String> listItem = ["Most Liked", "Recent"];
+    String? valueChoose; // Use String? for null safety
+    List<String> listItem = ["Most Liked", "Recent"];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
-        title: Text(
-          "O P I N I O",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: AppBar(
+          foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+          title: Text(
+            "O P I N I O",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+          ),
+          centerTitle: true,
+          // backgroundColor: Color.fromRGBO(32, 32, 32, 1),
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(Icons.menu),
+                color: Colors.white,
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
         ),
-        centerTitle: true,
-        // backgroundColor: Color.fromRGBO(32, 32, 32, 1),
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              color: Colors.white,
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            );
-          },
-        ),
-      ),
-      /*floatingActionButton: FloatingActionButton(
+        /*floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -67,145 +65,145 @@ class _Home1PageState extends State<Home1Page> {
         },
         child: Icon(Icons.add),
       ),*/
-      drawer: Drawer(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        child: ListView(
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.red), //BoxDecoration
-              // child: UserAccountsDrawerHeader(
-              //   decoration: BoxDecoration(color: Colors.red),
-              //   accountName: Text(
-              //     "UserId",
-              //     style: TextStyle(fontSize: 18),
-              //   ),
-              //   accountEmail: Text(currentUser.email!),
-              //   currentAccountPictureSize: Size.square(50),
-              //   currentAccountPicture: CircleAvatar(
-              //     backgroundColor: Color.fromRGBO(32, 32, 32, 1),
-              //     child: Text(
-              //       "T",
-              //       style: TextStyle(fontSize: 30.0, color: Colors.white),
-              //     ),
-              //   ),
-              // ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    child: Text(
-                      'T',
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Theme.of(context).colorScheme.inversePrimary,
+        drawer: Drawer(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          child: ListView(
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(color: Colors.red), //BoxDecoration
+                // child: UserAccountsDrawerHeader(
+                //   decoration: BoxDecoration(color: Colors.red),
+                //   accountName: Text(
+                //     "UserId",
+                //     style: TextStyle(fontSize: 18),
+                //   ),
+                //   accountEmail: Text(currentUser.email!),
+                //   currentAccountPictureSize: Size.square(50),
+                //   currentAccountPicture: CircleAvatar(
+                //     backgroundColor: Color.fromRGBO(32, 32, 32, 1),
+                //     child: Text(
+                //       "T",
+                //       style: TextStyle(fontSize: 30.0, color: Colors.white),
+                //     ),
+                //   ),
+                // ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      child: Text(
+                        'T',
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
                       ),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    Text(
+                      currentUser.email!,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.favorite,
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                ),
+                title: Text(
+                  ' Liked Comments ',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
                   ),
-                  Text(
-                    currentUser.email!,
-                    style: TextStyle(color: Colors.black),
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, '/liked_comments_page');
+                },
+              ),
+              Divider(
+                color: Theme.of(context).colorScheme.inversePrimary,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.favorite,
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                ),
+                title: Text(
+                  ' Liked Debates ',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
                   ),
-                ],
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, '/liked_debates_page');
+                },
               ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.favorite,
+              Divider(
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
-              title: Text(
-                ' Liked Comments ',
-                style: TextStyle(
+              ListTile(
+                leading: Icon(
+                  Icons.ads_click,
                   color: Theme.of(context).colorScheme.inversePrimary,
                 ),
+                title: Text(
+                  ' Recently Viewed Debates ',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, '/liked_debates_page');
+                },
               ),
-              onTap: () {
-                Navigator.pushNamed(context, '/liked_comments_page');
-              },
-            ),
-            Divider(
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.favorite,
+              Divider(
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
-              title: Text(
-                ' Liked Debates ',
-                style: TextStyle(
+              ListTile(
+                leading: Icon(
+                  Icons.settings,
                   color: Theme.of(context).colorScheme.inversePrimary,
                 ),
+                title: Text(
+                  ' Settings ',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, '/settings_page');
+                },
               ),
-              onTap: () {
-                Navigator.pushNamed(context, '/liked_debates_page');
-              },
-            ),
-            Divider(
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.ads_click,
+              Divider(
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
-              title: Text(
-                ' Recently Viewed Debates ',
-                style: TextStyle(
+              ListTile(
+                leading: Icon(
+                  Icons.settings,
                   color: Theme.of(context).colorScheme.inversePrimary,
                 ),
+                title: Text(
+                  ' My Debates ',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UserDeabtes()));
+                },
               ),
-              onTap: () {
-                Navigator.pushNamed(context, '/liked_debates_page');
-              },
-            ),
-            Divider(
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.settings,
+              Divider(
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
-              title: Text(
-                ' Settings ',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                ),
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, '/settings_page');
-              },
-            ),
-            Divider(
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.settings,
-                color: Theme.of(context).colorScheme.inversePrimary,
-              ),
-              title: Text(
-                ' My Debates ',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UserDeabtes()));
-              },
-            ),
-            Divider(
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      body: Column(
-        children: [
-          /*DropdownButton<String>(
+        body: Column(
+          children: [
+            /*DropdownButton<String>(
             hint: Text(
               "Sort:",
               style: TextStyle(
@@ -226,9 +224,98 @@ class _Home1PageState extends State<Home1Page> {
               );
             }).toList(),
           ),*/
-          Expanded(
-            child: StreamBuilder(
-              stream: firestoreService.getDebatesStream(valueChoose),
+            Expanded(
+              child: StreamBuilder(
+                stream: firestoreService.getDebatesStream(valueChoose),
+                builder: (context, snapshot) {
+                  // Show loading circle while waiting
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  // Get all debates from Firestore
+                  final debates = snapshot.data!.docs;
+
+                  // Return as a ListView
+                  return ListView.builder(
+                    itemCount: debates.length,
+                    itemBuilder: (context, index) {
+                      // Get each debate
+                      final debate = debates[index];
+                      // Get data from each debate
+                      String title = debate['title'];
+                      Timestamp timestamp = debate['timestamp'];
+                      //get debate id
+
+                      // Return as a ListTile with GestureDetector
+                      return GestureDetector(
+                        onTap: () {
+                          // Navigate to another page on tap
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DebatePage(
+                                debateId: debate.id,
+                                title: title,
+                                forOpinions: List<String>.from(
+                                    debate['forOpinions'] ?? []),
+                                againstOpinions: List<String>.from(
+                                    debate['againstOpinions'] ?? []),
+                                imageUrl: debate['imageUrl'] ?? '',
+                              ), // Pass data to the next page
+                            ),
+                          );
+                        },
+                        // child: ListTile(
+                        //   title: Text(title),
+                        //   subtitle: Text(
+                        //       DateFormat('MMM dd, yyyy').format(timestamp.toDate())),
+                        // ),
+                        child: DebateTile(
+                          title: title,
+                          likes: List<String>.from(debate['likes'] ?? []),
+                          debateId: debate.id,
+                          forOpinions:
+                              List<String>.from(debate['forOpinions'] ?? []),
+                          againstOpinions: List<String>.from(
+                              debate['againstOpinions'] ?? []),
+                          imageUrl: debate['imageUrl'] ?? '',
+                          timestamp: DateFormat('MMM dd, yyyy')
+                              .format(timestamp.toDate())
+                              .toString(), // Dynamically fetch imageUrl
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            /*ListView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            itemCount:
+                widget.news == "Breaking" ? sliders.length : rticles.length,
+            itemBuilder: (context, index) {
+              print(articles.length);
+              print(sliders.length);
+              return AllNewsSection(
+                  Image: widget.news == "Breaking"
+                      ? sliders[index].urlToImage!
+                      : articles[index].urlToImage!,
+                  desc: widget.news == "Breaking"
+                      ? sliders[index].description!
+                      : articles[index].description!,
+                  title: widget.news == "Breaking"
+                      ? sliders[index].title!
+                      : articles[index].title!,
+                  url: widget.news == "Breaking"
+                      ? sliders[index].url!
+                      : articles[index].url!);
+            }),*/
+            StreamBuilder(
+              stream: firestoreService.getDebatesStream(null),
               builder: (context, snapshot) {
                 // Show loading circle while waiting
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -249,6 +336,7 @@ class _Home1PageState extends State<Home1Page> {
                     // Get data from each debate
                     String title = debate['title'];
                     Timestamp timestamp = debate['timestamp'];
+                    String imageUrl = debate['imageUrl'];
                     //get debate id
 
                     // Return as a ListTile with GestureDetector
@@ -260,12 +348,12 @@ class _Home1PageState extends State<Home1Page> {
                           MaterialPageRoute(
                             builder: (context) => DebatePage(
                               debateId: debate.id,
+                              imageUrl: debate[imageUrl],
                               title: title,
                               forOpinions: List<String>.from(
                                   debate['forOpinions'] ?? []),
                               againstOpinions: List<String>.from(
                                   debate['againstOpinions'] ?? []),
-                              imageUrl: debate['imageUrl'] ?? '',
                             ), // Pass data to the next page
                           ),
                         );
@@ -277,25 +365,23 @@ class _Home1PageState extends State<Home1Page> {
                       // ),
                       child: DebateTile(
                         title: title,
+                        imageUrl: debate['imageUrl'],
                         likes: List<String>.from(debate['likes'] ?? []),
                         debateId: debate.id,
                         forOpinions:
                             List<String>.from(debate['forOpinions'] ?? []),
                         againstOpinions:
                             List<String>.from(debate['againstOpinions'] ?? []),
-                        imageUrl: debate['imageUrl'] ?? '',
-                        timestamp: DateFormat('MMM dd, yyyy')
-                            .format(timestamp.toDate())
-                            .toString(), // Dynamically fetch imageUrl
+                        timestamp: '',
                       ),
                     );
                   },
                 );
               },
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
   }
 }
