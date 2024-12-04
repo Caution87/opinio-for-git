@@ -134,7 +134,13 @@ class _PostCommentsPageState extends State<PostCommentsPage> {
                     controller: commentController,
                     hintText: "",
                     obscureText: false),
-                ElevatedButton(onPressed: postComment, child: Text("Post")),
+                ElevatedButton(
+                  onPressed: postComment,
+                  child: Text("Post"),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red)),
+                ),
               ],
             ),
           ),

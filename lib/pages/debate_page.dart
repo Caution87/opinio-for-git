@@ -24,7 +24,8 @@ class DebatePage extends StatefulWidget {
     required this.debateId,
     required this.title,
     required this.forOpinions,
-    required this.againstOpinions, required this.imageUrl,
+    required this.againstOpinions,
+    required this.imageUrl,
   });
 
   @override
@@ -148,6 +149,7 @@ class _DebatePageState extends State<DebatePage> {
         },
         child: Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       //floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
@@ -155,28 +157,27 @@ class _DebatePageState extends State<DebatePage> {
         children: [
           //Image
           Container(
-              height: 230,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                          image: widget.imageUrl.isNotEmpty
-                              ? NetworkImage(widget.imageUrl) // Load from Firebase
-                              : AssetImage("lib/Opinio_Images/placeholder.png")
-                                  as ImageProvider, // Default placeholder
-                          fit: BoxFit.cover,
-                        ),
-                borderRadius:
-                    BorderRadius.circular(20), // Added rounded corners
-                boxShadow: [
-                  // Added shadow for elevation effect
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                ],
+            height: 230,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: widget.imageUrl.isNotEmpty
+                    ? NetworkImage(widget.imageUrl) // Load from Firebase
+                    : AssetImage("lib/Opinio_Images/placeholder.png")
+                        as ImageProvider, // Default placeholder
+                fit: BoxFit.cover,
               ),
+              borderRadius: BorderRadius.circular(20), // Added rounded corners
+              boxShadow: [
+                // Added shadow for elevation effect
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: Offset(0, 5),
+                ),
+              ],
             ),
+          ),
 
           SizedBox(height: 10),
           // Statement
@@ -204,7 +205,8 @@ class _DebatePageState extends State<DebatePage> {
                 debateId: widget.debateId,
                 title: widget.title,
                 forOpinions: widget.forOpinions,
-                againstOpinions: widget.againstOpinions, imageUrl: widget.imageUrl,
+                againstOpinions: widget.againstOpinions,
+                imageUrl: widget.imageUrl,
               ),
               //Space
               const SizedBox(
@@ -303,8 +305,8 @@ class _DebatePageState extends State<DebatePage> {
           // Comments
           Expanded(
             child: StreamBuilder(
-              stream: firestoreService
-                  .getCommentsStream(widget.debateId,valueChoose), // Use widget.debateId
+              stream: firestoreService.getCommentsStream(
+                  widget.debateId, valueChoose), // Use widget.debateId
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -334,15 +336,16 @@ class _DebatePageState extends State<DebatePage> {
                           .format(timestamp.toDate())
                           .toString(),
                       opinion: col,
-                      comment: content, likes: List<String>.from(comment['likes'] ?? []), commentId: comment.id, debateId: widget.debateId,
+                      comment: content,
+                      likes: List<String>.from(comment['likes'] ?? []),
+                      commentId: comment.id,
+                      debateId: widget.debateId,
                     );
                   },
                 );
               },
             ),
           ),
-    
-
         ],
       ),
     );

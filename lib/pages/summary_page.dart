@@ -19,7 +19,8 @@ class Summarypage extends StatefulWidget {
       required this.name,
       required this.debateId,
       required this.forOpinions,
-      required this.againstOpinions, required this.imageUrl});
+      required this.againstOpinions,
+      required this.imageUrl});
 
   @override
   State<Summarypage> createState() => _SummarypageState();
@@ -83,12 +84,12 @@ class _SummarypageState extends State<Summarypage> {
               width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                          image: widget.imageUrl.isNotEmpty
-                              ? NetworkImage(widget.imageUrl) // Load from Firebase
-                              : AssetImage("lib/Opinio_Images/placeholder.png")
-                                  as ImageProvider, // Default placeholder
-                          fit: BoxFit.cover,
-                        ),
+                  image: widget.imageUrl.isNotEmpty
+                      ? NetworkImage(widget.imageUrl) // Load from Firebase
+                      : AssetImage("lib/Opinio_Images/placeholder.png")
+                          as ImageProvider, // Default placeholder
+                  fit: BoxFit.cover,
+                ),
                 borderRadius:
                     BorderRadius.circular(20), // Added rounded corners
                 boxShadow: [
@@ -228,11 +229,18 @@ class _SummarypageState extends State<Summarypage> {
                       width: 8,
                     ),
                     ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red)),
                       onPressed: _loading
                           ? null
                           : () => _sendChatMessage(_textController.text),
-                      child:
-                          _loading ? CircularProgressIndicator() : Text('Send'),
+                      child: _loading
+                          ? CircularProgressIndicator()
+                          : Text(
+                              'Send',
+                              style: TextStyle(color: Colors.white),
+                            ),
                     ),
                   ],
                 )))

@@ -116,6 +116,7 @@ class _PostDebatePageState extends State<PostDebatePage> {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
+                  style: ButtonStyle(backgroundColor:  MaterialStateProperty.all<Color>(Colors.red)),
                   onPressed: _isUploading
                       ? null
                       : () async {
