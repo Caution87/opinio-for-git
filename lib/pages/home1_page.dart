@@ -26,37 +26,23 @@ class _Home1PageState extends State<Home1Page> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   void signUserOut() async {
     await FirebaseAuth.instance.signOut();
+  }
 
-    String? valueChoose; // Use String? for null safety
-    List<String> listItem = ["Most Liked", "Recent"];
+  String? valueChoose; // Use String? for null safety
+  List<String> listItem = ["Most Liked", "Recent"];
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+          centerTitle: true,
           title: Text(
             "O P I N I O",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
           ),
-          centerTitle: true,
-          // backgroundColor: Color.fromRGBO(32, 32, 32, 1),
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(Icons.menu),
-                color: Colors.white,
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-        ),
-        /*floatingActionButton: FloatingActionButton(
+          /*floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -65,6 +51,7 @@ class _Home1PageState extends State<Home1Page> {
         },
         child: Icon(Icons.add),
       ),*/
+        ),
         drawer: Drawer(
           backgroundColor: Theme.of(context).colorScheme.surface,
           child: ListView(
@@ -201,9 +188,8 @@ class _Home1PageState extends State<Home1Page> {
             ],
           ),
         ),
-        body: Column(
-          children: [
-            /*DropdownButton<String>(
+        body: Column(children: [
+          /*DropdownButton<String>(
             hint: Text(
               "Sort:",
               style: TextStyle(
@@ -224,22 +210,23 @@ class _Home1PageState extends State<Home1Page> {
               );
             }).toList(),
           ),*/
-            Expanded(
-              child: StreamBuilder(
-                stream: firestoreService.getDebatesStream(valueChoose),
-                builder: (context, snapshot) {
-                  // Show loading circle while waiting
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
+          Expanded(
+            child: StreamBuilder(
+              stream: firestoreService.getDebatesStream(valueChoose),
+              builder: (context, snapshot) {
+                // Show loading circle while waiting
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-                  // Get all debates from Firestore
-                  final debates = snapshot.data!.docs;
+                // Get all debates from Firestore
+                final debates = snapshot.data!.docs;
 
-                  // Return as a ListView
-                  return ListView.builder(
+                // Return as a ListView
+                return Expanded(
+                  child: ListView.builder(
                     itemCount: debates.length,
                     itemBuilder: (context, index) {
                       // Get each debate
@@ -288,11 +275,15 @@ class _Home1PageState extends State<Home1Page> {
                         ),
                       );
                     },
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
-            /*ListView.builder(
+          )
+        ]));
+  }
+}
+          /*ListView.builder(
             shrinkWrap: true,
             physics: ClampingScrollPhysics(),
             itemCount:
@@ -314,74 +305,4 @@ class _Home1PageState extends State<Home1Page> {
                       ? sliders[index].url!
                       : articles[index].url!);
             }),*/
-            StreamBuilder(
-              stream: firestoreService.getDebatesStream(null),
-              builder: (context, snapshot) {
-                // Show loading circle while waiting
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
 
-                // Get all debates from Firestore
-                final debates = snapshot.data!.docs;
-
-                // Return as a ListView
-                return ListView.builder(
-                  itemCount: debates.length,
-                  itemBuilder: (context, index) {
-                    // Get each debate
-                    final debate = debates[index];
-                    // Get data from each debate
-                    String title = debate['title'];
-                    Timestamp timestamp = debate['timestamp'];
-                    String imageUrl = debate['imageUrl'];
-                    //get debate id
-
-                    // Return as a ListTile with GestureDetector
-                    return GestureDetector(
-                      onTap: () {
-                        // Navigate to another page on tap
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DebatePage(
-                              debateId: debate.id,
-                              imageUrl: debate[imageUrl],
-                              title: title,
-                              forOpinions: List<String>.from(
-                                  debate['forOpinions'] ?? []),
-                              againstOpinions: List<String>.from(
-                                  debate['againstOpinions'] ?? []),
-                            ), // Pass data to the next page
-                          ),
-                        );
-                      },
-                      // child: ListTile(
-                      //   title: Text(title),
-                      //   subtitle: Text(
-                      //       DateFormat('MMM dd, yyyy').format(timestamp.toDate())),
-                      // ),
-                      child: DebateTile(
-                        title: title,
-                        imageUrl: debate['imageUrl'],
-                        likes: List<String>.from(debate['likes'] ?? []),
-                        debateId: debate.id,
-                        forOpinions:
-                            List<String>.from(debate['forOpinions'] ?? []),
-                        againstOpinions:
-                            List<String>.from(debate['againstOpinions'] ?? []),
-                        timestamp: '',
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      );
-    }
-  }
-}
